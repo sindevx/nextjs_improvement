@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.swiper_tag {
+	border-bottom: 0px;
+}
+
+.postCard-list-wrap {
+	border-bottom: 0px;
+}
+
+.body-wrap {
+	margin-top: 15px;
+}
+
+/* .sub-nav.open .sp-link-list .menu-item {
+	color: white;
+	text-decoration: none;
+	font-size: 16px;
+	padding: 10px 0;
+	display: block;
+	background: none;
+	border: none;
+	width: 100%;
+	text-align: left;
+	cursor: pointer;
+  } */
+/* 
+  const logoClass = `transition-all ${
+	isMobile && isMenuOpen ? 'filter invert' : ''
+  }`; */
+
+
+
+
+  
+@media screen and (min-width: 1368px) {
+    body:has(#guide-renderer-mini[style*="display: block"]) .main-wrap {
+        max-width: 100vw;
+    }
+}
+
