@@ -1,19 +1,5 @@
 import { notFound } from 'next/navigation';
-import { NextPage } from 'next';
-import React from 'react';
-
-interface BlogPostProps {
-  post: { id: number; title: string; content: string };
-}
-
-const BlogPost: NextPage<BlogPostProps> = ({ post }) => {
-  return (
-    <div className="bg-white rounded-lg shadow-md p-4 space-y-4">
-      <h1 className="text-4xl font-bold text-gray-600">{post.title}</h1>
-      <p className="text-sm text-gray-500">{post.content}</p>
-    </div>
-  );
-};
+import BlogPostContent from '@/components/BlogPostContent';
 
 export async function generateStaticParams() {
   return [
@@ -22,11 +8,15 @@ export async function generateStaticParams() {
   ];
 }
 
-export async function getData(id: string) {
+async function getData(id: string) {
   const post = {
     id: parseInt(id),
     title: `Blog Post ${id}`,
-    content: `Detailed content for blog post ${id}. This is a more comprehensive view of the post.`,
+    content: `Detailed content for blog post ${id}. This is a more comprehensive view of the post with in-depth discussion of the topic.`,
+    author: "John Doe",
+    date: "May 15, 2024",
+    readTime: "5 min read",
+    category: "Technology"
   };
 
   return post;
@@ -39,6 +29,5 @@ export default async function Page({ params }: { params: { id: string } }) {
     notFound();
   }
 
-  return <BlogPost post={post} />;
+  return <BlogPostContent post={post} />;
 }
-

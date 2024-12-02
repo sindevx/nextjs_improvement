@@ -27,7 +27,7 @@ const Sidebar: React.FC = () => {
             </a>
         </li>
         <li className="p-4 hover:bg-gray-700 cursor-pointer flex items-center">
-            <a href='/users' className="flex items-center">
+            <a href='/user' className="flex items-center">
               <FaUserCircle className="mr-2" />
               User Management
             </a>
