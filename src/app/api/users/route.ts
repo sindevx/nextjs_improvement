@@ -1,11 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 
 import { NextRequest, NextResponse } from 'next/server';
-// import { supabase } from '@/utils/supabaseClient';
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
+
 export async function GET() {
   try {
     const { data, error } = await supabase
