@@ -1,89 +1,50 @@
 // src/app/api/auth/route.ts
-import { createClient } from '@supabase/supabase-js';
-
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
 
 export const dynamic = 'force-dynamic';
 
 // Login API
 export async function POST(request: NextRequest) {
-    if (request.method === 'OPTIONS') {
-      return new NextResponse(null, {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-    }
-  
-    try {
-      const { email, password } = await request.json();
-  
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-  
-      if (error) {
-        return new NextResponse(
-          JSON.stringify({ error: error.message }),
-          {
-            status: 401,
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-      }
-      console.log('data', data)
-      return new NextResponse(
-        JSON.stringify({
-          user: data.user,
-          session: data.session
-        }),
-        {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-  
-    } catch (error) {
-      return new NextResponse(
-        JSON.stringify({ error: 'Internal server error' }),
-        {
-          status: 500,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-    }
+  if (request.method === 'OPTIONS') {
+    return new NextResponse(null, { status: 200 });
   }
+
+  try {
+    const { email, password } = await request.json();
+    const supabase = createRouteHandlerClient({ cookies });
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      return NextResponse.json(
+          { error: error.message },
+          { status: 401 }
+      );
+    }
+
+    return NextResponse.json({
+      user: data.user,
+      session: data.session
+    });
+
+  } catch (error) {
+    console.error('Login error:', error);
+    return NextResponse.json(
+        { error: 'Internal server error' },
+        { status: 500 }
+    );
+  }
+}
+
 // Logout API
 export async function DELETE(request: NextRequest) {
   try {
-    
-    const {
-      data: { session },
-      error: sessionError
-    } = await supabase.auth.getSession();
-
-    if (sessionError) {
-      throw sessionError;
-    }
-
-    if (!session) {
-      return NextResponse.json(
-        { error: 'ไม่พบ session ที่ active' },
-        { status: 401 }
-      );
-    }
+    const supabase = createRouteHandlerClient({ cookies });
 
     const { error } = await supabase.auth.signOut();
 
@@ -91,18 +52,13 @@ export async function DELETE(request: NextRequest) {
       throw error;
     }
 
-    // ล้าง cookies
-    const response = NextResponse.json({
-      message: 'ออกจากระบบสำเร็จ'
-    });
-
-    return response;
+    return NextResponse.json({ message: 'Logged out successfully' });
 
   } catch (error) {
-    console.error('Server error during logout:', error);
+    console.error('Logout error:', error);
     return NextResponse.json(
-      { error: 'เกิดข้อผิดพลาดในการออกจากระบบ' },
-      { status: 500 }
+        { error: 'Error during logout' },
+        { status: 500 }
     );
   }
 }
@@ -110,11 +66,9 @@ export async function DELETE(request: NextRequest) {
 // Get current session
 export async function GET(request: NextRequest) {
   try {
-    
-    const {
-      data: { session },
-      error
-    } = await supabase.auth.getSession();
+    const supabase = createRouteHandlerClient({ cookies });
+
+    const { data: { session }, error } = await supabase.auth.getSession();
 
     if (error) {
       throw error;
@@ -122,17 +76,17 @@ export async function GET(request: NextRequest) {
 
     if (!session) {
       return NextResponse.json(
-        { user: null },
-        { status: 401 }
+          { user: null },
+          { status: 401 }
       );
     }
 
-    // ดึงข้อมูลผู้ใช้เพิ่มเติม
+    // Get additional user data if needed
     const { data: userData, error: userError } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', session.user.id)
-      .single();
+        .from('users')
+        .select('*')
+        .eq('id', session.user.id)
+        .single();
 
     if (userError) {
       console.error('Error fetching user data:', userError);
@@ -146,10 +100,10 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Server error fetching session:', error);
+    console.error('Session error:', error);
     return NextResponse.json(
-      { error: 'เกิดข้อผิดพลาดในการตรวจสอบ session' },
-      { status: 500 }
+        { error: 'Error checking session' },
+        { status: 500 }
     );
   }
 }
