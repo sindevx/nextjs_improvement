@@ -5,85 +5,168 @@ import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(request: Request) {
-    try {
-        const { searchParams } = new URL(request.url);
-        const postId = searchParams.get('postId');
-        const supabase = createRouteHandlerClient({ cookies });
+// export async function POST(request: Request) {
+//     try {
+//         const { content, postId, images } = await request.json();
+//         const cookieStore = cookies();
+//         const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+//
+//         // Get current user's session
+//         const { data: { session }, error: authError } = await supabase.auth.getSession();
+//
+//         if (authError || !session) {
+//             return NextResponse.json(
+//                 { error: 'Unauthorized' },
+//                 { status: 401 }
+//             );
+//         }
+//
+//         // Upload base64 images to Supabase Storage
+//         const imageUrls = await Promise.all(
+//             (images || []).map(async (base64String: string) => {
+//                 // Extract file type and base64 data
+//                 const [, mime, base64Data] = base64String.match(/^data:(.*);base64,(.*)$/) || [];
+//
+//                 if (!mime || !base64Data) {
+//                     throw new Error('Invalid image format');
+//                 }
+//
+//                 // Convert base64 to buffer
+//                 const buffer = Buffer.from(base64Data, 'base64');
+//                 const fileExt = mime.split('/')[1];
+//                 const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+//                 const filePath = `${session.user.id}/${fileName}`;
+//
+//                 const { error: uploadError } = await supabase.storage
+//                     .from('comment-images')
+//                     .upload(filePath, buffer, {
+//                         contentType: mime
+//                     });
+//
+//                 if (uploadError) {
+//                     throw uploadError;
+//                 }
+//
+//                 const { data: { publicUrl } } = supabase.storage
+//                     .from('comment-images')
+//                     .getPublicUrl(filePath);
+//
+//                 return publicUrl;
+//             })
+//         );
+//
+//         // Add the comment
+//         const { data: newComment, error: insertError } = await supabase
+//             .from('comments')
+//             .insert([
+//                 {
+//                     content,
+//                     post_id: postId,
+//                     user_id: session.user.id,
+//                     images: imageUrls
+//                 }
+//             ])
+//             .select('*')  // Just select all fields from comments table
+//             .single();
+//
+//         if (insertError) {
+//             throw insertError;
+//         }
+//
+//         // Format the response manually without joining
+//         const commentWithUser = {
+//             ...newComment,
+//             user: {
+//                 email: session.user.email,
+//                 raw_user_meta_data: {
+//                     full_name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+//                     avatar_url: session.user.user_metadata?.avatar_url
+//                 }
+//             }
+//         };
+//
+//         return NextResponse.json(commentWithUser);
+//     } catch (error) {
+//         console.error('Error in POST /api/comments:', error);
+//         return NextResponse.json(
+//             { error: error instanceof Error ? error.message : 'Error creating comment' },
+//             { status: 500 }
+//         );
+//     }
+// }
 
-        if (!postId) {
-            return NextResponse.json(
-                { error: 'Post ID is required' },
-                { status: 400 }
-            );
-        }
-
-        // Get comments without join
-        const { data: comments, error: commentsError } = await supabase
-            .from('comments')
-            .select('*')
-            .eq('post_id', postId)
-            .order('created_at', { ascending: false });
-
-        if (commentsError) {
-            console.error('Comments fetch error:', commentsError);
-            throw commentsError;
-        }
-
-        // Get user data for each comment
-        const commentsWithUsers = await Promise.all(
-            comments.map(async (comment) => {
-                const { data: { user } } = await supabase.auth.getUser();
-
-                return {
-                    ...comment,
-                    user: {
-                        email: user?.email || 'Anonymous',
-                        raw_user_meta_data: {
-                            full_name: user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Anonymous User',
-                            avatar_url: user?.user_metadata?.avatar_url || null
-                        }
-                    }
-                };
-            })
-        );
-
-        return NextResponse.json(commentsWithUsers);
-    } catch (error) {
-        console.error('Error in GET /api/comments:', error);
-        return NextResponse.json(
-            { error: 'Error fetching comments' },
-            { status: 500 }
-        );
-    }
-}
-
+// app/api/comments/route.ts
+// app/api/comments/route.ts
 export async function POST(request: Request) {
     try {
-        const body = await request.json();
-        const supabase = createRouteHandlerClient({ cookies });
+        const formData = await request.formData();
+        const content = formData.get('content') as string;
+        const postId = formData.get('postId') as string;
+        const imageFiles = formData.getAll('images') as File[];
 
-        // Get current user's session
+        // Validate required fields
+        if (!content?.trim()) {
+            return NextResponse.json({ error: 'Content is required' }, { status: 400 });
+        }
+
+        if (!postId) {
+            return NextResponse.json({ error: 'Post ID is required' }, { status: 400 });
+        }
+
+        const cookieStore = cookies();
+        const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+
         const { data: { session }, error: authError } = await supabase.auth.getSession();
 
         if (authError || !session) {
-            console.error('Auth error:', authError);
             return NextResponse.json(
                 { error: 'Unauthorized' },
                 { status: 401 }
             );
         }
 
+        // Upload images if any
+        const imageUrls = [];
+        if (imageFiles.length > 0) {
+            for (const file of imageFiles) {
+                try {
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+                    const filePath = `${session.user.id}/${fileName}`;
+
+                    const arrayBuffer = await file.arrayBuffer();
+                    const buffer = Buffer.from(arrayBuffer);
+
+                    const { error: uploadError } = await supabase.storage
+                        .from('comment-images')
+                        .upload(filePath, buffer, {
+                            contentType: file.type,
+                            cacheControl: '3600'
+                        });
+
+                    if (uploadError) throw uploadError;
+
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('comment-images')
+                        .getPublicUrl(filePath);
+
+                    imageUrls.push(publicUrl);
+                } catch (uploadError) {
+                    console.error('Upload error:', uploadError);
+                    // Continue with other images if one fails
+                }
+            }
+        }
+
         // Add the comment
         const { data: newComment, error: insertError } = await supabase
             .from('comments')
-            .insert([
-                {
-                    content: body.content,
-                    post_id: body.postId,
-                    user_id: session.user.id
-                }
-            ])
+            .insert({
+                content: content.trim(),
+                post_id: postId,
+                user_id: session.user.id,
+                images: imageUrls
+            })
             .select('*')
             .single();
 
@@ -92,23 +175,83 @@ export async function POST(request: Request) {
             throw insertError;
         }
 
-        // Add user data to the response
-        const commentWithUser = {
+        return NextResponse.json({
             ...newComment,
             user: {
                 email: session.user.email,
                 raw_user_meta_data: {
-                    full_name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || 'Anonymous User',
-                    avatar_url: session.user.user_metadata?.avatar_url || null
+                    full_name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+                    avatar_url: session.user.user_metadata?.avatar_url
                 }
             }
-        };
-
-        return NextResponse.json(commentWithUser);
+        });
     } catch (error) {
         console.error('Error in POST /api/comments:', error);
         return NextResponse.json(
-            { error: 'Error creating comment' },
+            { error: error instanceof Error ? error.message : 'Error creating comment' },
+            { status: 500 }
+        );
+    }
+}
+export async function GET(request: Request) {
+    try {
+        const { searchParams } = new URL(request.url);
+        const postId = searchParams.get('postId');
+        const cookieStore = cookies();
+        const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+
+        if (!postId) {
+            return NextResponse.json(
+                { error: 'Post ID is required' },
+                { status: 400 }
+            );
+        }
+
+        // Get comments without joining
+        const { data: comments, error: commentsError } = await supabase
+            .from('comments')
+            .select('*')
+            .eq('post_id', postId)
+            .order('created_at', { ascending: false });
+
+        if (commentsError) throw commentsError;
+
+        // Get all unique user IDs from comments
+        const userIds = [...new Set(comments.map(comment => comment.user_id))];
+
+        // Get user data for each unique user ID
+        const userDataMap = new Map();
+
+        for (const userId of userIds) {
+            const { data: { user }, error: userError } = await supabase.auth.admin.getUserById(userId);
+            if (!userError && user) {
+                userDataMap.set(userId, {
+                    email: user.email,
+                    raw_user_meta_data: {
+                        full_name: user.user_metadata?.full_name || user.email?.split('@')[0],
+                        avatar_url: user.user_metadata?.avatar_url
+                    }
+                });
+            }
+        }
+
+        // Map comments with user data
+        const commentsWithUsers = comments.map(comment => ({
+            ...comment,
+            user: userDataMap.get(comment.user_id) || {
+                email: 'Anonymous',
+                raw_user_meta_data: {
+                    full_name: 'Anonymous User',
+                    avatar_url: null
+                }
+            }
+        }));
+
+        return NextResponse.json(commentsWithUsers);
+    } catch (error) {
+        console.error('Error in GET /api/comments:', error);
+        return NextResponse.json(
+            { error: 'Error fetching comments' },
             { status: 500 }
         );
     }
@@ -135,6 +278,27 @@ export async function DELETE(request: Request) {
             return NextResponse.json(
                 { error: 'Unauthorized' },
                 { status: 401 }
+            );
+        }
+
+        // Get comment to delete its images
+        const { data: comment } = await supabase
+            .from('comments')
+            .select('images')
+            .eq('id', commentId)
+            .single();
+
+        if (comment?.images?.length > 0) {
+            // Delete images from storage
+            await Promise.all(
+                comment?.images?.map(async (imageUrl: string) => {
+                    const path = new URL(imageUrl).pathname.split('/').pop();
+                    if (path) {
+                        await supabase.storage
+                            .from('comment-images')
+                            .remove([path]);
+                    }
+                })
             );
         }
 

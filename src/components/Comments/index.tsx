@@ -15,18 +15,9 @@ export default function Comments({ postId }: CommentsProps) {
     const { comments, loading, error, addComment, deleteComment, refreshComments } = useComments(postId);
     const { user } = useAuth();
 
-    // Refresh comments when post changes or component mounts
     useEffect(() => {
         refreshComments();
     }, [postId, refreshComments]);
-
-    console.log('Comments component rendered:', {
-        postId,
-        commentsCount: comments.length,
-        userId: user?.id,
-        loading,
-        error
-    });
 
     if (loading) {
         return (
@@ -50,9 +41,9 @@ export default function Comments({ postId }: CommentsProps) {
         );
     }
 
-    const handleAddComment = async (content: string) => {
-        console.log('Adding comment:', content);
-        const result = await addComment(content);
+    const handleAddComment = async (content: string, images: File[]) => {
+        console.log('Adding comment:', { content, imageCount: images.length });
+        const result = await addComment(content, images);
         if (result.success) {
             await refreshComments();
         }
@@ -76,22 +67,17 @@ export default function Comments({ postId }: CommentsProps) {
                 </h2>
 
                 <CommentForm
+                    postId={postId}
                     onSubmit={handleAddComment}
                     isLoading={loading}
                 />
 
                 <div className="mt-8 border-t pt-8">
-                    {comments.length > 0 ? (
-                        <CommentList
-                            comments={comments}
-                            currentUser={user}
-                            onDelete={handleDeleteComment}
-                        />
-                    ) : (
-                        <div className="text-center py-8">
-                            <p className="text-gray-500">No comments yet. Be the first to comment!</p>
-                        </div>
-                    )}
+                    <CommentList
+                        comments={comments}
+                        currentUser={user}
+                        onDelete={handleDeleteComment}
+                    />
                 </div>
             </div>
         </div>

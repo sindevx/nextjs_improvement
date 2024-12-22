@@ -1,21 +1,7 @@
 // hooks/useComments.ts
 import { useState, useEffect, useCallback } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-
-interface Comment {
-    id: string;
-    content: string;
-    created_at: string;
-    user_id: string;
-    post_id: number;
-    user: {
-        email: string;
-        raw_user_meta_data: {
-            full_name?: string;
-            avatar_url?: string;
-        };
-    };
-}
+import type { Comment } from '@/types/comment';
 
 export function useComments(postId: number) {
     const [comments, setComments] = useState<Comment[]>([]);
@@ -23,7 +9,6 @@ export function useComments(postId: number) {
     const [error, setError] = useState<string | null>(null);
     const supabase = createClientComponentClient();
 
-    // Create a fetchComments function that we can reuse
     const fetchComments = useCallback(async () => {
         try {
             setLoading(true);
@@ -42,7 +27,6 @@ export function useComments(postId: number) {
             }
 
             const data = await response.json();
-            console.log('Fetched comments:', data);
             setComments(data);
         } catch (err) {
             console.error('Error fetching comments:', err);
@@ -52,12 +36,10 @@ export function useComments(postId: number) {
         }
     }, [postId]);
 
-    // Initial fetch
     useEffect(() => {
         fetchComments();
     }, [fetchComments]);
 
-    // Set up realtime subscription
     useEffect(() => {
         const channel = supabase
             .channel(`comments:${postId}`)
@@ -71,39 +53,30 @@ export function useComments(postId: number) {
                 },
                 async (payload) => {
                     console.log('Realtime event received:', payload);
-
-                    if (payload.eventType === 'INSERT') {
-                        // Fetch the latest comments to ensure we have the most up-to-date data
-                        await fetchComments();
-                    } else if (payload.eventType === 'DELETE') {
-                        setComments(current =>
-                            current.filter(comment => comment.id !== payload.old.id)
-                        );
-                    } else if (payload.eventType === 'UPDATE') {
-                        await fetchComments();
-                    }
+                    await fetchComments(); // Always fetch fresh data
                 }
             )
-            .subscribe((status) => {
-                console.log('Subscription status:', status);
-            });
+            .subscribe();
 
-        // Cleanup subscription
         return () => {
-            console.log('Cleaning up subscription');
             supabase.removeChannel(channel);
         };
     }, [postId, supabase, fetchComments]);
 
-    const addComment = async (content: string) => {
+    const addComment = async (content: string, images: File[]) => {
         try {
+            const formData = new FormData();
+            formData.append('content', content);
+            formData.append('postId', postId.toString());
+
+            images.forEach(image => {
+                formData.append('images', image);
+            });
+
             const response = await fetch('/api/comments', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
                 credentials: 'include',
-                body: JSON.stringify({ content, postId }),
+                body: formData
             });
 
             const data = await response.json();
@@ -112,9 +85,7 @@ export function useComments(postId: number) {
                 throw new Error(data.error || 'Failed to add comment');
             }
 
-            // Fetch latest comments after adding new one
             await fetchComments();
-
             return { success: true };
         } catch (err) {
             console.error('Error adding comment:', err);
@@ -126,7 +97,7 @@ export function useComments(postId: number) {
 
     const deleteComment = async (commentId: string) => {
         try {
-            const response = await fetch(`/api/comments/${commentId}`, {
+            const response = await fetch(`/api/comments?id=${commentId}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
@@ -136,9 +107,7 @@ export function useComments(postId: number) {
                 throw new Error(data.error || 'Failed to delete comment');
             }
 
-            // Remove comment from local state
             setComments(current => current.filter(comment => comment.id !== commentId));
-
             return { success: true };
         } catch (err) {
             console.error('Error deleting comment:', err);
@@ -154,6 +123,6 @@ export function useComments(postId: number) {
         error,
         addComment,
         deleteComment,
-        refreshComments: fetchComments // Export the refresh function
+        refreshComments: fetchComments
     };
 }
