@@ -142,31 +142,35 @@ export default function CommentList({ comments, currentUser, onDelete }: Comment
                 ))}
             </div>
 
-            {/* Image Preview Modal */}
             <Dialog
                 open={!!selectedImage}
                 onClose={() => setSelectedImage(null)}
                 className="relative z-50"
             >
-                <div className="fixed inset-0 bg-black/70" aria-hidden="true" />
+                {/* พื้นหลังสีดำโปร่งใส */}
+                <div className="fixed inset-0 bg-black/80" aria-hidden="true" />
 
+                {/* Container สำหรับรูปภาพ */}
                 <div className="fixed inset-0 flex items-center justify-center p-4">
-                    <Dialog.Panel className="relative bg-white rounded-lg max-w-3xl max-h-[90vh] overflow-hidden">
+                    <Dialog.Panel className="relative max-w-screen-xl w-full h-full flex items-center justify-center">
+                        {/* ปุ่มปิด */}
                         <button
                             onClick={() => setSelectedImage(null)}
-                            className="absolute top-2 right-2 z-10 p-1 bg-white rounded-full shadow-lg hover:bg-gray-100"
+                            className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
                         >
-                            <X className="w-6 h-6" />
+                            <X className="w-6 h-6 text-white" />
                         </button>
 
                         {selectedImage && (
-                            <div className="relative w-full max-w-[800px]">
+                            <div className="relative w-full h-full flex items-center justify-center">
                                 <Image
                                     src={selectedImage}
                                     alt="Preview"
-                                    width={800}
-                                    height={600}
+                                    fill
                                     className="object-contain"
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                                    priority
+                                    quality={100}
                                 />
                             </div>
                         )}
