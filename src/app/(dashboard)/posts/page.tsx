@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import {fetchWithAuth} from "@/utils/api";
 
 interface Post {
   id: number;
@@ -26,11 +27,12 @@ export default function PostsPage() {
   async function fetchPosts() {
     try {
       setLoading(true);
-      const response = await fetch('/api/posts');
-      if (!response.ok) throw new Error('Failed to fetch posts');
-      const data = await response.json();
+      // เอา .json() ออก เพราะ fetchWithAuth จะ return json ให้แล้ว
+      const data = await fetchWithAuth('/api/posts');
+      console.log('Fetched Posts:', data); // ล็อกข้อมูลที่ได้
       setPosts(data);
     } catch (err) {
+      console.error('Fetch Error:', err); // ล็อก error ให้ละเอียด
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
@@ -40,10 +42,10 @@ export default function PostsPage() {
   async function deletePost(id: number) {
     if (!confirm('Are you sure you want to delete this post?')) return;
     try {
-      const response = await fetch(`/api/posts/${id}`, { method: 'DELETE' });
-      if (!response.ok) throw new Error('Failed to delete post');
+      await fetchWithAuth(`/api/posts/${id}`, { method: 'DELETE' });
       await fetchPosts();
     } catch (err) {
+      console.error('Delete Error:', err);
       setError(err instanceof Error ? err.message : 'Failed to delete post');
     }
   }
@@ -146,7 +148,7 @@ export default function PostsPage() {
                   {/* Content Section */}
                   <div className="p-6">
                     <h2 className="text-xl font-semibold text-gray-900 mb-2">{post.title}</h2>
-                    <p className="text-gray-600 line-clamp-3 mb-4">{post.content}</p>
+                    <div className='text-gray-600 line-clamp-2 mb-4' dangerouslySetInnerHTML={{ __html: post.content }} />
                     <div className="flex items-center justify-between text-sm text-gray-500">
                       <span>{new Date(post.created_at).toLocaleDateString()}</span>
                       <div className="flex space-x-2">

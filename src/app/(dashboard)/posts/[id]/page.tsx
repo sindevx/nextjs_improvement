@@ -7,6 +7,7 @@ import { Dialog } from '@headlessui/react';
 import Image from 'next/image';
 import { X, Minus, Plus, RotateCcw } from 'lucide-react';
 import Index from '@/components/Comments';
+import {fetchWithAuth} from "@/utils/api";
 
 interface Post {
     id: number;
@@ -27,13 +28,7 @@ export default function PostDetails({ params }: { params: { id: string } }) {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const response = await fetch(`/api/posts/${params.id}`);
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.error || 'Error fetching post');
-                }
-
+                const data = await fetchWithAuth(`/api/posts/${params.id}`);
                 setPost(data);
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'An error occurred');
@@ -162,11 +157,9 @@ export default function PostDetails({ params }: { params: { id: string } }) {
                             </span>
                         </div>
                         <div className="prose prose-lg max-w-none">
-                            {post.content.split('\n').map((paragraph, index) => (
-                                <p key={index} className="mb-4 text-gray-700 leading-relaxed">
-                                    {paragraph}
-                                </p>
-                            ))}
+                            <div className="prose max-w-none">
+                                <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                            </div>
                         </div>
                     </div>
                 </article>

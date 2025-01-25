@@ -2,6 +2,35 @@
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+// import {createClient} from "@supabase/supabase-js";
+//
+// const supabase = createClient(
+//     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+//     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+// );
+//
+// async function verifyAuth(request: Request) {
+//     const authHeader = request.headers.get('authorization');
+//
+//     if (!authHeader?.startsWith('Bearer ')) {
+//         return { error: 'No bearer token provided' };
+//     }
+//
+//     const token = authHeader.split(' ')[1];
+//
+//     try {
+//         const { data: { user }, error } = await supabase.auth.getUser(token);
+//
+//         if (error || !user) {
+//             return { error: 'Invalid or expired token' };
+//         }
+//
+//         return { user };
+//     } catch (error) {
+//         return { error: 'Authentication failed'+ error };
+//     }
+// }
+
 
 export const dynamic = 'force-dynamic';
 
@@ -105,8 +134,8 @@ export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
         const postId = searchParams.get('postId');
-        const cookieStore = cookies();
-        const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+         const cookieStore = cookies();
+         const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 
         if (!postId) {
             return NextResponse.json(

@@ -1,34 +1,68 @@
+// app/api/posts/[id]/route.ts
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-// GET single post
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+// Middleware function to verify token
+async function verifyAuth(request: Request) {
+  const authHeader = request.headers.get('authorization');
+
+  if (!authHeader?.startsWith('Bearer ')) {
+    return { error: 'No bearer token provided' };
+  }
+
+  const token = authHeader.split(' ')[1];
+
   try {
-    if (!params.id) {
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+
+    if (error || !user) {
+      return { error: 'Invalid or expired token' };
+    }
+
+    return { user };
+  } catch (error) {
+    return { error: 'Authentication failed' + error };
+  }
+}
+
+// GET single post
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+
+  try {
+    const { id } = await params;
+
+    // Verify authentication
+    const { user, error: authError } = await verifyAuth(request);
+
+    if (authError) {
       return NextResponse.json(
-        { error: 'Post ID is required' }, 
-        { status: 400 }
+          { error: authError },
+          { status: 401 }
+      );
+    }
+
+    if (!id) {
+      return NextResponse.json(
+          { error: 'Post ID is required' },
+          { status: 400 }
       );
     }
 
     const { data, error } = await supabase
-      .from('posts')
-      .select('*')
-      .eq('id', params.id)
-      .single();
+        .from('posts')
+        .select('*')
+        .eq('id', id)
+        .single();
 
     if (error) {
       return NextResponse.json(
-        { error: 'Post not found' }, 
-        { status: 404 }
+          { error: 'Post not found' },
+          { status: 404 }
       );
     }
 
@@ -36,114 +70,127 @@ export async function GET(
   } catch (error) {
     console.error('Server Error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' }, 
-      { status: 500 }
+        { error: 'Internal server error' },
+        { status: 500 }
     );
   }
 }
 
-// UPDATE post
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    if (!params.id) {
-      return NextResponse.json(
-        { error: 'Post ID is required' }, 
-        { status: 400 }
-      );
-    }
+      const { id } = await params;
 
-    const body = await request.json();
+      // 1. ตรวจสอบ auth
+      const { user, error: authError } = await verifyAuth(request);
+      console.log('Current user:', user?.id);
 
-    // Validate request body
-    if (!body.title || !body.content) {
-      return NextResponse.json(
-        { error: 'Title and content are required' }, 
-        { status: 400 }
-      );
-    }
+      if (authError || !user) {
+          return NextResponse.json(
+              { error: 'Unauthorized' },
+              { status: 401 }
+          );
+      }
 
-    const { data, error } = await supabase
-      .from('posts')
-      .update({
-        title: body.title,
-        content: body.content,
-        image_url: body.image_url,
-      })
-      .eq('id', params.id)
-      .select()
-      .single();
+      // 2. ดึงข้อมูลโพสต์
+      const { data: post, error: fetchError } = await supabase
+          .from('posts')
+          .select('*')
+          .eq('id', id)
+          .single();
 
-    if (error) {
-      console.error('Database Error:', error);
-      return NextResponse.json(
-        { error: 'Error updating post' }, 
-        { status: 500 }
-      );
-    }
+      console.log('Post data:', post);
 
-    return NextResponse.json(data);
+      if (fetchError) {
+          console.error('Fetch error:', fetchError);
+          return NextResponse.json(
+              { error: 'Post not found' },
+              { status: 404 }
+          );
+      }
+
+      // 3. อัพเดทข้อมูล
+      const body = await request.json();
+      
+      const { data: updatedPost, error: updateError } = await supabase
+          .from('posts')
+          .update({
+              title: body.title.trim(),
+              content: body.content.trim(),
+              image_url: body.image_url,
+              updated_at: new Date().toISOString(),
+              // user_id: user.id  // เพิ่ม user_id
+          })
+          .eq('id', id)
+          .select()
+          .single();
+
+      if (updateError) {
+          console.error('Update error:', updateError);
+          return NextResponse.json(
+              { error: 'Failed to update post' },
+              { status: 500 }
+          );
+      }
+
+      return NextResponse.json(updatedPost);
   } catch (error) {
-    console.error('Server Error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' }, 
-      { status: 500 }
-    );
+      console.error('Server error:', error);
+      return NextResponse.json(
+          { error: 'Internal server error' },
+          { status: 500 }
+      );
   }
 }
 
-// DELETE post
+
+
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
+    request: Request,
+    { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    if (!params.id) {
+    const { id } = await params;
+    console.log('Delete request for post ID:', id); // เพิ่ม log
+
+    // ตรวจสอบว่ามีโพสต์อยู่จริงไหม
+    const { data: post, error: fetchError } = await supabase
+        .from('posts')
+        .select()
+        .eq('id', id)
+        .single();
+
+    console.log('Fetch result:', { post, fetchError }); // เพิ่ม log
+
+    if (fetchError || !post) {
       return NextResponse.json(
-        { error: 'Post ID is required' }, 
-        { status: 400 }
+          { error: 'Post not found' },
+          { status: 404 }
       );
     }
 
-    // First, get the post to check if it has an image
-    const { data: post } = await supabase
-      .from('posts')
-      .select('image_url')
-      .eq('id', params.id)
-      .single();
+    // ลบโพสต์
+    const { error: deleteError } = await supabase
+        .from('posts')
+        .delete()
+        .eq('id', id);
 
-    // If post has an image, delete it from storage
-    if (post?.image_url) {
-      const fileName = post.image_url.split('/').pop();
-      if (fileName) {
-        await supabase.storage
-          .from('post-images')
-          .remove([fileName]);
-      }
-    }
-
-    // Delete the post
-    const { error } = await supabase
-      .from('posts')
-      .delete()
-      .eq('id', params.id);
-
-    if (error) {
-      console.error('Database Error:', error);
+    if (deleteError) {
+      console.error('Delete error:', deleteError); // เพิ่ม log
       return NextResponse.json(
-        { error: 'Error deleting post' }, 
-        { status: 500 }
+          { error: 'Failed to delete post' },
+          { status: 500 }
       );
     }
 
-    return NextResponse.json({ message: 'Post deleted successfully' });
+    return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Server Error:', error);
+    console.error('Server error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' }, 
-      { status: 500 }
+        { error: 'Internal server error' },
+        { status: 500 }
     );
   }
 }
