@@ -10,12 +10,6 @@
         "email": "Email",
         "password": "Password",
         "login": "Login",
-        "register": "Register",
-        "forgotPassword": "Forgot Password",
-        "rememberMe": "Remember Me",
-        "signIn": "Sign In",
-        "signUp": "Sign Up",
-        "termsOfUse": "Terms of Use",
-        "privacyPolicy": "Privacy Policy"
+        "register": "Register"
     }
 }

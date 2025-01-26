@@ -1,0 +1,21 @@
+{
+    "home": "ホーム",
+    "posts": "投稿",
+    "create": "作成",
+    "edit": "編集",
+    "delete": "削除",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "login": {
+        "email": "メールアドレス",
+        "password": "パスワード",
+        "login": "ログイン",
+        "register": "登録",
+        "forgotPassword": "パスワードを忘れた場合",
+        "rememberMe": "ログイン情報を記憶する",
+        "signIn": "サインイン",
+        "signUp": "サインアップ",
+        "termsOfUse": "利用規約",
+        "privacyPolicy": "プライバシーポリシー"
+    }
+}

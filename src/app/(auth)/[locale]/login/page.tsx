@@ -5,8 +5,10 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff, LogIn, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useLanguage } from '@/hooks/useLanguage';
 
 export default function LoginPage() {
+  const { t } = useLanguage();
   const router = useRouter();
   const supabase = createClientComponentClient();
 
@@ -67,7 +69,7 @@ export default function LoginPage() {
               {/* Email Field */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email
+                  {t('login.email')} 
                 </label>
                 <input
                     type="email"
@@ -82,7 +84,7 @@ export default function LoginPage() {
               {/* Password Field */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Password
+                  {t('login.password')}
                 </label>
                 <div className="relative">
                   <input
