@@ -6,6 +6,7 @@
     "delete": "Delete",
     "save": "Save",
     "cancel": "Cancel",
+    "language": "Language",
     "login": {
         "email": "Email",
         "password": "Password",
@@ -16,6 +17,10 @@
         "signIn": "Sign In",
         "signUp": "Sign Up",
         "termsOfUse": "Terms of Use",
-        "privacyPolicy": "Privacy Policy"
+        "privacyPolicy": "Privacy Policy",
+        "welcome": "Welcome",
+        "pleaseLogin": "please login for continue",
+        "byLoggingIn": "By logging in, you agree to our",
+        "emailPlaceholder": "please enter your email"
     }
 }

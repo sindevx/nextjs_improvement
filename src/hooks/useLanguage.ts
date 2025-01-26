@@ -45,10 +45,14 @@ import { useRouter, usePathname } from 'next/navigation'
 // นำเข้าไฟล์แปลโดยตรง
 import th from '@/locales/th/common.json'
 import en from '@/locales/en/common.json'
+import jp from '@/locales/jp/common.json'
+import la from '@/locales/la/common.json'
 
 const dictionaries = {
   th,
-  en
+  en,
+  jp,
+  la,
 } as const
 
 type Locale = keyof typeof dictionaries

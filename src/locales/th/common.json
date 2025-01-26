@@ -6,6 +6,7 @@
     "delete": "ลบ",
     "save": "บันทึก",
     "cancel": "ยกเลิก",
+    "language": "ภาษา",
     "login": {
         "email": "อีเเมล",
         "password": "รหัสผ่าน",
@@ -16,6 +17,11 @@
         "signIn": "สมัครสมาชิก",
         "signUp": "สมัครสมาชิก",
         "termsOfUse": "เงื่อนไขการใช้งาน",
-        "privacyPolicy": "นโยบายความเป็นส่วนตัว"
+        "privacyPolicy": "นโยบายความเป็นส่วนตัว",
+        "welcome": "ยินดีต้อนรับ",
+        "pleaseLogin": "กรุณาเข้าสู่ระบบเพื่อดำเนินการต่อ",
+        "byLoggingIn": "เข้าสู่ระบบเพื่อดำเนินการต่อ",
+        "dontHaveAccount": "ยังไม่มีบันชี?",
+        "emailPlaceholder": "please enter your email"
     }
 }

@@ -1,6 +1,6 @@
 export const i18n = {
     defaultLocale: 'th',
-    locales: ['th', 'en', 'la'],
+    locales: ['th', 'en', 'la', 'jp'],
     localeDetection: false, 
   }
 

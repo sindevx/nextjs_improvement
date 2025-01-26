@@ -53,8 +53,8 @@ export default function LoginPage() {
             <div className="bg-blue-600 w-12 h-12 rounded-lg inline-flex items-center justify-center mb-4">
               <LogIn className="w-6 h-6 text-white" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900">Welcome back</h2>
-            <p className="text-gray-600 mt-2">please login for continue</p>
+            <h2 className="text-2xl font-bold text-gray-900">{t('login.welcome')}</h2>
+            <p className="text-gray-600 mt-2">{t('login.pleaseLogin')}</p>
           </div>
 
           {/* Login Form */}
@@ -76,7 +76,7 @@ export default function LoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
-                    placeholder="your@email.com"
+                    placeholder={t('login.emailPlaceholder')}
                     required
                 />
               </div>
@@ -118,14 +118,14 @@ export default function LoginPage() {
                       className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                   <label htmlFor="remember" className="ml-2 block text-sm text-gray-700">
-                    Remember me
+                    {t('login.rememberMe')}
                   </label>
                 </div>
                 <button
                     type="button"
                     className="text-sm font-medium text-blue-600 hover:text-blue-500"
                 >
-                  forgot password?
+                  {t('login.forgotPassword')}
                 </button>
               </div>
 
@@ -138,33 +138,33 @@ export default function LoginPage() {
                 {isLoading ? (
                     <>
                       <Loader2 className="w-5 h-5 animate-spin mr-2" />
-                      Logging in...
+                      {t('login.loggingIn')}
                     </>
                 ) : (
-                    'Log in'
+                    t('login.login')
                 )}
               </button>
             </form>
 
             {/* Register Link */}
             <div className="mt-6 text-center">
-              <span className="text-gray-600">Don't have an account? </span>
+              <span className="text-gray-600">{t('login.dontHaveAccount')} </span>
               <button
                   onClick={() => router.push('/register')}
                   className="text-blue-600 hover:text-blue-500 font-medium"
               >
-                Sign Up
+                {t('login.signUp')}
               </button>
             </div>
           </div>
 
           {/* Footer */}
           <div className="mt-8 text-center text-sm text-gray-600">
-            <p>By logging in, you agree to our</p>
+            <p>{t('login.byLoggingIn')}</p>
             <div className="mt-1 space-x-2">
-              <button className="text-blue-600 hover:text-blue-500">Terms of Use</button>
+              <button className="text-blue-600 hover:text-blue-500">{t('login.termsOfUse')}</button>
               <span>&</span>
-              <button className="text-blue-600 hover:text-blue-500">Privacy Policy</button>
+              <button className="text-blue-600 hover:text-blue-500">{t('login.privacyPolicy')}</button>
             </div>
           </div>
         </div>
