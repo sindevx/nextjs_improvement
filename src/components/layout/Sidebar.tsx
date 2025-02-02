@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react';
-import {FaBlog, FaInfoCircle, FaEnvelope, FaUserCircle, FaNewspaper} from 'react-icons/fa';
+import {FaBlog, FaInfoCircle, FaEnvelope, FaUserCircle, FaNewspaper, FaTags, FaTypo3} from 'react-icons/fa';
 import Link from "next/link";
 import { useLanguage } from '@/hooks/useLanguage';
 
@@ -28,19 +28,19 @@ const Sidebar: React.FC = () => {
 
                     </li>
                 </Link>
-                <a href="/about" className="flex items-center">
+              
+                <Link href='/categories'>
+                <li className="p-4 hover:bg-gray-700 cursor-pointer flex items-center">
+                    <FaTypo3 className="mr-2"/>
+                    {t('sidebar.categories')}
+                </li>
+                </Link>
+                <Link href='/tags'>
 
-                    <li className="p-4 hover:bg-gray-700 cursor-pointer flex items-center">
-                        <FaInfoCircle className="mr-2"/>
-                        {t('sidebar.about')}
-                    </li>
-                </a>
-                <Link href='/contact'>
-
-                    <li className="p-4 hover:bg-gray-700 cursor-pointer flex items-center">
-                        <FaEnvelope className="mr-2"/>
-                        {t('sidebar.contact')}
-                    </li>
+                <li className="p-4 hover:bg-gray-700 cursor-pointer flex items-center">
+                    <FaTags className="mr-2"/>
+                    {t('sidebar.tags')}
+                </li>
                 </Link>
                 <Link href='/user'>
 
@@ -48,6 +48,21 @@ const Sidebar: React.FC = () => {
                         <FaUserCircle className="mr-2"/>
                         {t('sidebar.userManagement')}
                     </li>
+                </Link>
+
+                <Link href="/about">
+
+                <li className="p-4 hover:bg-gray-700 cursor-pointer flex items-center">
+                    <FaInfoCircle className="mr-2"/>
+                    {t('sidebar.about')}
+                </li>
+                </Link>
+                <Link href='/contact'>
+
+                <li className="p-4 hover:bg-gray-700 cursor-pointer flex items-center">
+                    <FaEnvelope className="mr-2"/>
+                    {t('sidebar.contact')}
+                </li>
                 </Link>
 
             </ul>

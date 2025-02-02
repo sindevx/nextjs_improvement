@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server';
+// app/api/posts/[id]/route.ts
 import { createClient } from '@supabase/supabase-js';
+import { NextResponse } from 'next/server';
 
 const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -29,8 +30,48 @@ async function verifyAuth(request: Request) {
   }
 }
 
-// GET single category
+// GET single tag
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+
+  try {
+    const { id } = await params;
+
+    // Verify authentication
+    const { user, error: authError } = await verifyAuth(request);
+
+    if (authError) {
+      return NextResponse.json(
+          { error: authError },
+          { status: 401 }
+      );
+    }
+
+    const { data, error } = await supabase
+        .from('tags')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+    if (error) {
+        console.error('Database Error:', error);
+        return NextResponse.json(
+            { error: 'Error fetching tag' },
+            { status: 500 }
+        );
+    }
+
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error('Server Error:', error);
+    return NextResponse.json(
+        { error: 'Internal server error' },
+        { status: 500 }
+    );
+  }
+}
+
+// DELETE single tag
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
     // Verify authentication
     const { user, error: authError } = await verifyAuth(request);
 
@@ -44,15 +85,15 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     const { id } = await params;
 
     const { data, error } = await supabase
-        .from('categories')
-        .select('*')
+        .from('tags')
+        .delete()
         .eq('id', id)
-        .single();
+        .select();
 
     if (error) {
         console.error('Database Error:', error);
         return NextResponse.json(
-            { error: 'Error fetching category' },
+            { error: 'Error deleting tag' },
             { status: 500 }
         );
     }
@@ -60,7 +101,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     return NextResponse.json(data);
 }
 
-// UPDATE single category
+// UPDATE single tag
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
     // Verify authentication
     const { user, error: authError } = await verifyAuth(request);
@@ -76,7 +117,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     const body = await request.json();
 
     const { data, error } = await supabase
-        .from('categories')
+        .from('tags')
         .update(body)
         .eq('id', id)
         .select();
@@ -84,38 +125,43 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     if (error) {
         console.error('Database Error:', error);
         return NextResponse.json(
-            { error: 'Error updating category' },
+            { error: 'Error updating tag' },
             { status: 500 }
         );
     }
 
     return NextResponse.json(data);
-
 }
 
-// DELETE single category
-export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
-    // Verify authentication
-    const { user, error: authError } = await verifyAuth(request);
+// UPDATE single tag
+export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  // Verify authentication
+  const { user, error: authError } = await verifyAuth(request);
 
-    if (authError) {
+  if (authError) {
+    return NextResponse.json(
+        { error: authError },
+        { status: 401 }
+    );
+  }
+
+  const { id } = await params;
+  const body = await request.json();
+
+  console.log('body', body);
+  const { data, error } = await supabase
+      .from('tags')
+      .update(body)
+      .eq('id', id)
+      .select();
+
+  if (error) {
+      console.error('Database Error:', error);
       return NextResponse.json(
-          { error: authError },
-          { status: 401 }
+          { error: 'Error updating tag' },
+          { status: 500 }
       );
-    }
+  }
 
-    const { id } = await params;
-
-    const { error } = await supabase.from('categories').delete().eq('id', id);
-
-    if (error) {
-        console.error('Database Error:', error);
-        return NextResponse.json(
-            { error: 'Error deleting category' },
-            { status: 500 }
-        );
-    }
-
-    return NextResponse.json({ message: 'Category deleted successfully' });
+  return NextResponse.json(data);
 }

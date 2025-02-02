@@ -28,7 +28,9 @@
         "posts": "Posts",
         "about": "About",
         "contact": "Contact",
-        "userManagement": "User Management"
+        "userManagement": "User Management",
+        "tags": "Tags",
+        "categories": "Categories"
     },
     "header":{
         "dashboard": "Dashboard",
@@ -108,5 +110,35 @@
         "projectTwoDescription": "Mobile-first responsive design using Next.js and Tailwind CSS",
         "projectThree": "Project Three",
         "projectThreeDescription": "API development and integration with third-party services"
+    },
+    "category":{
+        "categoriesManagement": "Categories Management",
+        "addCategory": "Add Category",
+        "searchCategories": "Search categories...",
+        "name": "Name",
+        "description": "Description",
+        "status": "Status",
+        "slug": "Slug",
+        "save": "Save",
+        "cancel": "Cancel",
+        "active": "Active",
+        "disabled": "Disabled"
+    },
+    "tag":{
+        "tagsManagement": "Tags Management",
+        "addTag": "Add Tag",
+        "searchTags": "Search tags...",
+        "name": "Name",
+        "slug": "Slug",
+        "status": "Status",
+        "save": "Save",
+        "cancel": "Cancel",
+        "active": "Active",
+        "disabled": "Disabled",
+        "disable": "Disable",
+        "actions": "Actions",
+        "edit": "Edit",
+        "delete": "Delete",
+        "enable": "Enable"
     }
 }

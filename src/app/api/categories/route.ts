@@ -52,6 +52,7 @@ export async function GET(request: Request) {
         );
     }
 
+
     return NextResponse.json(data);
 }
 
@@ -76,6 +77,7 @@ export async function POST(request: Request) {
             name: body.name.trim(),
             slug: body.slug.trim(),
             description: body.description.trim(),
+            status: body.status.trim(),
             created_at: new Date().toISOString(),
           }
         ])

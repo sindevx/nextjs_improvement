@@ -83,6 +83,7 @@ export async function POST(request: Request) {
           {
             name: body.name.trim(),
             slug: body.slug.trim(),
+            status: body.status.trim(),
             created_at: new Date().toISOString(),
           }
         ])

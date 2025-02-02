@@ -29,7 +29,9 @@
         "posts": "โพส",
         "about": "เกี่ยวกับเรา",
         "contact": "ติดต่อเรา",
-        "userManagement": "จัดการผู้ใช้"
+        "userManagement": "จัดการผู้ใช้",
+        "tags": "แท็ก",
+        "categories": "หมวดหมู่"
     },
     "header":{
         "dashboard": "หน้าแรก",
@@ -109,5 +111,39 @@
         "projectTwoDescription": "Mobile-first responsive design using Next.js and Tailwind CSS",
         "projectThree": "Project Three",
         "projectThreeDescription": "API development and integration with third-party services"
+    },
+    "category":{
+        "categoriesManagement": "จัดการหมวดหมู่",
+        "addCategory": "เพิ่มหมวดหมู่",
+        "searchCategories": "ค้นหาหมวดหมู่",
+        "name": "ชื่อ",
+        "description": "คำอะทิบัติ",
+        "status": "สถานะ",
+        "slug": "ละหัด",
+        "save": "บันทึก",
+        "cancel": "ยกเลิก",
+        "active": "เปิดใช้",
+        "disabled": "ปิดใช้",
+        "disable": "ปิดใช้",
+        "actions": "การดำเนินการ",
+        "edit": "แก้ไข",
+        "delete": "ปิดใช้"
+    },
+    "tag":{
+        "tagsManagement": "จัดการตัวแทน",
+        "addTag": "เพิ่มตัวแทน",
+        "searchTags": "ค้นหาตัวแทน",
+        "name": "ชื่อ",
+        "slug": "ละหัด",
+        "status": "สถานะ",
+        "save": "บันทึก",
+        "cancel": "ยกเลิก",
+        "active": "เปิดใช้",
+        "disabled": "ปิดใช้",
+        "disable": "ปิดใช้",
+        "actions": "การดำเนินการ",
+        "edit": "แก้ไข",
+        "delete": "ลบ",
+        "enable": "เปิดใช้"
     }
 }

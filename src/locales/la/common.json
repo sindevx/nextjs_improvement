@@ -29,7 +29,9 @@
     "posts": "ໂພສ",
     "about": "ກ່ຽວກັບພວກເຮົາ",
     "contact": "ຕິດຕໍ່ພວກເຮົາ",
-    "userManagement": "ຈັດການຜູ້ໃຊ້"
+    "userManagement": "ຈັດການຜູ້ໃຊ້",
+    "tags": "ແທັກ",
+    "categories": "ຫມວດໝູ່"
   },
   "header":{
     "profile": "ຂໍ້ມູດສ່ວນຕົວ",
@@ -109,5 +111,36 @@
     "projectTwoDescription": "Mobile-first responsive design using Next.js and Tailwind CSS",
     "projectThree": "Project Three",
     "projectThreeDescription": "API development and integration with third-party services"
+  },
+  "category":{
+    "categoriesManagement": "ຈັດການຫມວດໝູ່",
+    "addCategory": "ເພີ່ມຫມວດໝູ່",
+    "searchCategories": "ຄົ້ນຫາຫມວດໝູ່",
+    "name": "ຊື່",
+    "description": "ຄຳອະທິບາຍ",
+    "status": "ສະຖານະ",
+    "slug": "ລະຫັດ",
+    "save": "ບັນທຶກ",
+    "cancel": "ຍົກເລີກ",
+    "active": "ເປີດໃຊ້",
+    "disabled": "ປິດໃຊ້",
+    "actions": "ການດຳເນີນການ"
+  },
+  "tag":{
+    "tagsManagement": "ຈັດການຕົວ່ງ",
+    "addTag": "ເພີ່ມຕົວ່ງ",
+    "searchTags": "ຄົ້ນຫາຕົວ່ງ",
+    "name": "ຊື່",
+    "slug": "ລະຫັດ",
+    "status": "ສະຖານະ",
+    "save": "ບັນທຶກ",
+    "cancel": "ຍົກເລີກ",
+    "active": "ເປີດໃຊ້",
+    "disabled": "ປິດໃຊ້",
+    "disable": "ປິດໃຊ້",
+    "actions": "ການດຳເນີນການ",
+    "edit": "ແກ້ໄຂ",
+    "delete": "ລຶບ",
+    "enable": "ເປີດໃຊ້"
   }
 }

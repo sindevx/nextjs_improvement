@@ -35,7 +35,9 @@
         "settings": "設定",
         "logout": "ログアウト",
         "dashboard": "ダッシュボード",
-        "language": "言語"
+        "language": "言語",
+        "tags": "タグ",
+        "categories": "カテゴリ"
     },
     "user":{
         "name": "名前",
@@ -108,5 +110,35 @@
         "projectTwoDescription": "Mobile-first responsive design using Next.js and Tailwind CSS",
         "projectThree": "Project Three",
         "projectThreeDescription": "API development and integration with third-party services"
+    },
+    "category":{
+        "categoriesManagement": "カテゴリ管理",
+        "addCategory": "カテゴリ追加",
+        "searchCategories": "カテゴリを検索...",
+        "name": "名前",
+        "description": "説明",
+        "status": "ステータス",
+        "slug": "スラッグ",
+        "save": "保存",
+        "cancel": "キャンセル",
+        "active": "アクティブ",
+        "disabled": "無効"
+    },
+    "tag":{
+        "tagsManagement": "タグ管理",
+        "addTag": "タグ追加",
+        "searchTags": "タグを検索...",
+        "name": "名前",
+        "slug": "スラッグ",
+        "status": "ステータス",
+        "save": "保存",
+        "cancel": "キャンセル",
+        "active": "アクティブ",
+        "disabled": "無効",
+        "disable": "無効",
+        "actions": "アクション",
+        "edit": "編集",
+        "delete": "削除",
+        "enable": "有効"
     }
 }
