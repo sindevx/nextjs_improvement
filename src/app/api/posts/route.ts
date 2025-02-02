@@ -112,6 +112,19 @@ export async function POST(request: Request) {
       );
     }
 
+       // ส่ง email notification
+       await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/notifications/email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          postTitle: body.title.trim(),
+          postContent: body.content.trim(),
+          postId: data.id
+        })
+      })
+
     return NextResponse.json(data);
   } catch (error) {
     console.error('Server Error:', error);

@@ -1,6 +1,6 @@
 // src/app/layout.tsx
 import { AuthProvider } from '@/contexts/AuthContext';
-import '../globals.css';
+import '../../globals.css';
 
 export const metadata = {
   title: 'Next.js',
