@@ -4,8 +4,10 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaUserCircle, FaGlobe, FaCaretDown } from 'react-icons/fa';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const Header: React.FC = () => {
+  const { t } = useLanguage();
   const [isLanguagePopupOpen, setIsLanguagePopupOpen] = useState(false);
   const [isProfilePopupOpen, setIsProfilePopupOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("English");
@@ -57,7 +59,7 @@ const Header: React.FC = () => {
   return (
       <header className="fixed top-0 right-0 left-64 bg-white shadow-md z-50">
         <div className="flex justify-between items-center h-16 px-6">
-          <h2 className="text-lg font-bold text-gray-800">Dashboard</h2>
+          <h2 className="text-lg font-bold text-gray-800">{t('header.dashboard')}</h2>
 
           <div className="flex items-center space-x-6">
             {/* Language Selector */}
@@ -67,7 +69,7 @@ const Header: React.FC = () => {
                   onClick={toggleLanguagePopup}
               >
                 <FaGlobe className="text-xl" />
-                <span className="text-sm">{selectedLanguage}</span>
+                <span className="text-sm">{t('header.language')}</span>
               </button>
 
               {isLanguagePopupOpen && (
@@ -102,20 +104,20 @@ const Header: React.FC = () => {
                         className="w-full text-left px-4 py-2 text-sm hover:bg-gray-50"
                         onClick={() => router.push('/profile')}
                     >
-                      Profile
+                      {t('header.profile')}
                     </button>
                     <button
                         className="w-full text-left px-4 py-2 text-sm hover:bg-gray-50"
                         onClick={() => router.push('/settings')}
                     >
-                      Settings
+                      {t('header.settings')}
                     </button>
                     <hr className="my-1 border-gray-200" />
                     <button
                         className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                         onClick={handleLogout}
                     >
-                      Logout
+                      {t('header.logout')}
                     </button>
                   </div>
               )}

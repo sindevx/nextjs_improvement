@@ -1,7 +1,9 @@
+'use client'
 import React from 'react';
 import { Mail, Phone, MapPin, Facebook, Twitter, MessageCircle } from 'lucide-react';
-
+import { useLanguage } from '@/hooks/useLanguage';
 const ContactPage = () => {
+  const { t } = useLanguage();
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
@@ -10,7 +12,7 @@ const ContactPage = () => {
           <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-900">Get in Touch</h1>
             <p className="mt-4 text-xl text-gray-600">
-              We'd love to hear from you. Get in touch with us through any of these channels.
+                {t('contact.title')}
             </p>
           </div>
         </div>
@@ -23,16 +25,16 @@ const ContactPage = () => {
           <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow duration-300">
             <div className="flex items-center">
               <Mail className="h-8 w-8 text-blue-500" />
-              <h3 className="ml-3 text-xl font-medium text-gray-900">Email Us</h3>
+              <h3 className="ml-3 text-xl font-medium text-gray-900">{t('contact.emailUs')}</h3>  
             </div>
             <p className="mt-4 text-gray-600">
-              Send us an email anytime:
+              {t('contact.sendUsAnEmail')}
             </p>
             <a 
               href="mailto:contact@company.com" 
               className="mt-2 inline-block text-blue-600 hover:text-blue-800"
             >
-              contact@company.com
+              {t('contact.email')}
             </a>
           </div>
 
@@ -40,13 +42,13 @@ const ContactPage = () => {
           <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow duration-300">
             <div className="flex items-center">
               <Phone className="h-8 w-8 text-green-500" />
-              <h3 className="ml-3 text-xl font-medium text-gray-900">Call Us</h3>
+              <h3 className="ml-3 text-xl font-medium text-gray-900">{t('contact.callUs')}</h3>
             </div>
             <p className="mt-4 text-gray-600">
-              Available Monday to Friday:
+              {t('contact.availableMondayToFriday')}
             </p>
             <p className="mt-2 text-gray-900 font-medium">
-              +1 (555) 123-4567
+              {t('contact.phoneNumber')}
             </p>
           </div>
 
@@ -54,21 +56,21 @@ const ContactPage = () => {
           <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow duration-300">
             <div className="flex items-center">
               <MapPin className="h-8 w-8 text-red-500" />
-              <h3 className="ml-3 text-xl font-medium text-gray-900">Visit Us</h3>
+              <h3 className="ml-3 text-xl font-medium text-gray-900">{t('contact.visitUs')}</h3>
             </div>
             <p className="mt-4 text-gray-600">
-              123 Business Street
+              {t('contact.address')}
               <br />
-              Suite 100
+              {t('contact.suite')}
               <br />
-              City, State 12345
+              {t('contact.city')}
             </p>
           </div>
         </div>
 
         {/* Social Media Section */}
         <div className="mt-12 text-center">
-          <h2 className="text-2xl font-bold text-gray-900">Connect With Us</h2>
+          <h2 className="text-2xl font-bold text-gray-900">{t('contact.connectWithUs')}</h2>
           <div className="mt-6 flex justify-center space-x-6">
             <a 
               href="#" 

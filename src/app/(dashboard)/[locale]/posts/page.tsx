@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import {fetchWithAuth} from "@/utils/api";
-
+  import { useLanguage } from '@/hooks/useLanguage';
+import { useTranslation } from 'react-i18next';
 interface Post {
   id: number;
   title: string;
@@ -19,6 +20,7 @@ export default function PostsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const { t } = useLanguage();
 
   useEffect(() => {
     fetchPosts();
@@ -73,7 +75,7 @@ export default function PostsPage() {
         <nav className="bg-white border-b">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
-              <h1 className="text-xl font-semibold text-gray-800">Blog Posts</h1>
+              <h1 className="text-xl font-semibold text-gray-800">{t('post.blogPosts')}</h1>
               <button
                   onClick={() => router.push('/posts/new')}
                   className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
@@ -81,7 +83,7 @@ export default function PostsPage() {
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                 </svg>
-                New Post
+                {t('post.newPost')}
               </button>
             </div>
           </div>
@@ -94,7 +96,7 @@ export default function PostsPage() {
             <div className="relative">
               <input
                   type="text"
-                  placeholder="Search posts..."
+                  placeholder={t('post.searchPosts')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -159,7 +161,7 @@ export default function PostsPage() {
                             }}
                             className="px-3 py-1 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md"
                         >
-                          Edit
+                          {t('post.update')}
                         </button>
                         <button
                             onClick={(e) => {
@@ -168,7 +170,7 @@ export default function PostsPage() {
                             }}
                             className="px-3 py-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md"
                         >
-                          Delete
+                          {t('post.delete')}
                         </button>
                       </div>
                     </div>
@@ -179,7 +181,7 @@ export default function PostsPage() {
 
           {posts.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-gray-500">No posts found</p>
+                <p className="text-gray-500">{t('post.noPostsFound')}</p>
               </div>
           )}
         </main>

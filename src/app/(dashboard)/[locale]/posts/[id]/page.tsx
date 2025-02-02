@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { X, Minus, Plus, RotateCcw } from 'lucide-react';
 import Index from '@/components/Comments';
 import {fetchWithAuth} from "@/utils/api";
-
+import { useLanguage } from '@/hooks/useLanguage';
 interface Post {
     id: number;
     title: string;
@@ -24,7 +24,7 @@ export default function PostDetails({ params }: { params: { id: string } }) {
     const [error, setError] = useState<string | null>(null);
     const [isImageOpen, setIsImageOpen] = useState(false);
     const [zoomLevel, setZoomLevel] = useState(1);
-
+    const { t } = useLanguage();
     useEffect(() => {
         const fetchPost = async () => {
             try {
@@ -63,13 +63,13 @@ export default function PostDetails({ params }: { params: { id: string } }) {
             <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4">
                 <div className="text-center">
                     <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                        {error || 'Post not found'}
+                        {error || t('post.postNotFound')}
                     </h2>
                     <button
                         onClick={() => router.push('/posts')}
                         className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
                     >
-                        Back to Posts
+                        {t('post.backToPosts')}
                     </button>
                 </div>
             </div>
@@ -99,7 +99,7 @@ export default function PostDetails({ params }: { params: { id: string } }) {
                                     d="M10 19l-7-7m0 0l7-7m-7 7h18"
                                 />
                             </svg>
-                            Back to Posts
+                            {t('post.backToPosts')}
                         </button>
                     </div>
                 </div>

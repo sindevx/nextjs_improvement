@@ -6,7 +6,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { fetchWithAuth } from "@/utils/api";
 import RichTextEditor from '@/components/RichTextEditor';
 const supabase = createClientComponentClient();
-
+import { useLanguage } from '@/hooks/useLanguage';
 interface Post {
   id: number;
   title: string;
@@ -26,6 +26,7 @@ export default function EditPostPage(props: PageProps) {
   const params = use(props.params);
   const postId = params.id;
   const router = useRouter();
+  const { t } = useLanguage();
 
   const [post, setPost] = useState<Post | null>(null);
   const [title, setTitle] = useState('');
@@ -125,7 +126,7 @@ export default function EditPostPage(props: PageProps) {
       router.push('/posts');
     } catch (err) {
       console.error('Update Error:', err);
-      setError(err instanceof Error ? err.message : 'Failed to update post');
+      setError(err instanceof Error ? err.message : t('post.failedToUpdatePost'));
       setSaving(false);
     }
   }
@@ -168,7 +169,7 @@ export default function EditPostPage(props: PageProps) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                   </svg>
                 </button>
-                <h1 className="text-xl font-semibold text-gray-800">Edit Post</h1>
+                <h1 className="text-xl font-semibold text-gray-800">{t('post.editPost')}</h1>
               </div>
             </div>
           </div>
@@ -180,7 +181,7 @@ export default function EditPostPage(props: PageProps) {
               {/* Image Upload */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Cover Image
+                    {t('post.coverImage')}
                 </label>
                 <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                   <div className="space-y-1 text-center">
@@ -228,10 +229,10 @@ export default function EditPostPage(props: PageProps) {
                                   onChange={handleImageChange}
                               />
                             </label>
-                            <p className="pl-1">or drag and drop</p>
+                            <p className="pl-1">{t('post.orDragAndDrop')}</p>
                           </div>
                           <p className="text-xs text-gray-500">
-                            PNG, JPG, GIF up to 10MB
+                            {t('post.imageFormat')}
                           </p>
                         </>
                     )}
@@ -275,7 +276,7 @@ export default function EditPostPage(props: PageProps) {
                     onClick={() => router.back()}
                     className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
                 >
-                  Cancel
+                  {t('post.cancel')}
                 </button>
                 <button
                     type="submit"
@@ -285,10 +286,10 @@ export default function EditPostPage(props: PageProps) {
                   {saving ? (
                       <div className="flex items-center">
                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                        Saving...
+                        {t('post.saving')}
                       </div>
                   ) : (
-                      'Save Changes'
+                      t('post.saveChanges')
                   )}
                 </button>
               </div>

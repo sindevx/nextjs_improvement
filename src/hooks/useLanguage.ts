@@ -38,6 +38,8 @@
 //   }
 // }
 
+"use client"
+
 // hooks/useLanguage.ts
 import { useCallback } from 'react'
 import { useRouter, usePathname } from 'next/navigation'

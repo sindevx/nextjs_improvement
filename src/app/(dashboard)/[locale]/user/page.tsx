@@ -1,6 +1,7 @@
   
   'use client';
   import React, { useState, useEffect } from 'react';
+  import { useLanguage } from '@/hooks/useLanguage';
   interface User {
     id: number;
     name: string;
@@ -17,6 +18,7 @@
   }
   
   const UserManagement = () => {
+    const { t } = useLanguage();
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -108,7 +110,7 @@
       <div className="p-8">
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold">User Management with supabase data</h1>
+            <h1 className="text-2xl font-bold">{t('user.userManagement')}</h1>
             <button
               onClick={() => {
                 resetForm();
@@ -116,23 +118,23 @@
               }}
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
-              Add User
+              {t('user.addUser')}
             </button>
           </div>
   
           {loading ? (
-            <div className="text-center py-10">Loading...</div>
+            <div className="text-center py-10">{t('user.loading')}</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full table-auto">
                 <thead>
                   <tr className="bg-gray-100">
-                    <th className="px-4 py-2 text-left">Name</th>
-                    <th className="px-4 py-2 text-left">Password</th>
-                    <th className="px-4 py-2 text-left">Email</th>
-                    <th className="px-4 py-2 text-left">Role</th>
-                    <th className="px-4 py-2 text-left">Created At</th>
-                    <th className="px-4 py-2 text-right">Actions</th>
+                    <th className="px-4 py-2 text-left">{t('user.name')}</th>
+                    <th className="px-4 py-2 text-left">{t('user.password')}</th>
+                    <th className="px-4 py-2 text-left">{t('user.email')}</th>
+                    <th className="px-4 py-2 text-left">{t('user.role')}</th>
+                    <th className="px-4 py-2 text-left">{t('user.createdAt')}</th>
+                    <th className="px-4 py-2 text-right">{t('user.actions')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -148,13 +150,13 @@
                           onClick={() => handleEdit(user)}
                           className="text-blue-500 hover:text-blue-700 mr-2"
                         >
-                          Edit
+                          {t('user.edit')}
                         </button>
                         <button
                           onClick={() => handleDelete(user.id)}
                           className="text-red-500 hover:text-red-700"
                         >
-                          Delete
+                          {t('user.delete')}
                         </button>
                       </td>
                     </tr>
@@ -168,11 +170,11 @@
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
               <div className="bg-white p-6 rounded-lg w-full max-w-md">
                 <h2 className="text-xl font-bold mb-4">
-                  {selectedUser ? 'Edit User' : 'Add New User'}
+                  {selectedUser ? t('user.editUser') : t('user.addNewUser')}
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label className="block mb-1">Name</label>
+                    <label className="block mb-1">{t('user.name')}</label>
                     <input
                       type="text"
                       value={formData.name}
@@ -182,7 +184,7 @@
                     />
                   </div>
                   <div>
-                    <label className="block mb-1">Password</label>
+                    <label className="block mb-1">{t('user.password')}</label>
                     <input
                       type="text"
                       value={formData.password}
@@ -192,7 +194,7 @@
                     />
                   </div>
                   <div>
-                    <label className="block mb-1">Email</label>
+                    <label className="block mb-1">{t('user.email')}</label>
                     <input
                       type="email"
                       value={formData.email}
@@ -202,7 +204,7 @@
                     />
                   </div>
                   <div>
-                    <label className="block mb-1">Role</label>
+                    <label className="block mb-1">{t('user.role')}</label>
                     <input
                       type="text"
                       value={formData.role}
@@ -217,13 +219,13 @@
                       onClick={() => setIsModalOpen(false)}
                       className="px-4 py-2 border rounded hover:bg-gray-100"
                     >
-                      Cancel
+                      {t('user.cancel')}
                     </button>
                     <button
                       type="submit"
                       className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                     >
-                      {selectedUser ? 'Update' : 'Create'}
+                      {selectedUser ? t('user.update') : t('user.create')}
                     </button>
                   </div>
                 </form>

@@ -5,10 +5,12 @@ import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import {fetchWithAuth} from "@/utils/api";
 import RichTextEditor from '@/components/RichTextEditor';
+import { useLanguage } from '@/hooks/useLanguage';
 
 export default function CreatePostPage() {
     const router = useRouter();
     const supabase = createClientComponentClient();
+    const { t } = useLanguage();
 
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
@@ -29,7 +31,7 @@ export default function CreatePostPage() {
         const file = e.target.files?.[0];
         if (file) {
             if (file.size > 10 * 1024 * 1024) {
-                setError('Image must be less than 10MB');
+                setError(t('post.imageTooLarge'));
                 return;
             }
 
@@ -61,7 +63,7 @@ export default function CreatePostPage() {
 
                 if (uploadError) {
                     console.error('Upload error:', uploadError);
-                    throw new Error('Failed to upload image');
+                    throw new Error(t('post.failedToUploadImage'));
                 }
 
                 const { data: { publicUrl } } = supabase.storage
@@ -85,7 +87,7 @@ export default function CreatePostPage() {
             router.push('/posts');
         } catch (err) {
             console.error('Submission error:', err);
-            setError(err instanceof Error ? err.message : 'Failed to create post');
+            setError(err instanceof Error ? err.message : t('post.failedToCreatePost'));
             setLoading(false);
         }
     }
@@ -105,7 +107,7 @@ export default function CreatePostPage() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                                 </svg>
                             </button>
-                            <h1 className="text-xl font-semibold text-gray-800">Create New Post</h1>
+                            <h1 className="text-xl font-semibold text-gray-800">{t('post.newPost')}</h1>
                         </div>
                     </div>
                 </div>
@@ -125,7 +127,7 @@ export default function CreatePostPage() {
                         {/* Image Upload */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Cover Image
+                                {t('post.coverImage')}
                             </label>
                             <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-gray-400 transition-colors">
                                 <div className="space-y-1 text-center">
@@ -164,7 +166,7 @@ export default function CreatePostPage() {
                                             </svg>
                                             <div className="flex text-sm text-gray-600 mt-2">
                                                 <label className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
-                                                    <span>Upload a file</span>
+                                                    <span>{t('post.uploadFile')}</span>
                                                     <input
                                                         type="file"
                                                         className="sr-only"
@@ -174,7 +176,7 @@ export default function CreatePostPage() {
                                                 </label>
                                                 <p className="pl-1">or drag and drop</p>
                                             </div>
-                                            <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                                            <p className="text-xs text-gray-500">{t('post.imageFormat')}</p>
                                         </div>
                                     )}
                                 </div>
@@ -184,7 +186,7 @@ export default function CreatePostPage() {
                         {/* Title Input */}
                         <div>
                             <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-                                Title
+                                {t('post.title')}
                             </label>
                             <input
                                 type="text"
@@ -200,7 +202,7 @@ export default function CreatePostPage() {
                         {/* Content Input */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Content
+                                {t('post.content')}
                             </label>
                             <RichTextEditor
                                 initialValue={content}
@@ -216,7 +218,7 @@ export default function CreatePostPage() {
                                 onClick={() => router.back()}
                                 className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                             >
-                                Cancel
+                                {t('post.cancel')}
                             </button>
                             <button
                                 type="submit"
@@ -226,10 +228,10 @@ export default function CreatePostPage() {
                                 {loading ? (
                                     <div className="flex items-center">
                                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                                        Creating...
+                                        {t('post.creating')}
                                     </div>
                                 ) : (
-                                    'Create Post'
+                                    t('post.create')
                                 )}
                             </button>
                         </div>
