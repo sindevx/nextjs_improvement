@@ -1,6 +1,3 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-
 export async function verifyToken(request: Request) {
     const authHeader = request.headers.get('authorization');
 

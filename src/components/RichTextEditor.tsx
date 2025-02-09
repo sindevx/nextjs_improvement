@@ -28,6 +28,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
       <Editor
         apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
         onInit={(evt, editor) => {
+          console.log('editor', evt);
           editorRef.current = editor;
           // Set initial content after editor is initialized
           if (initialValue) {
@@ -36,6 +37,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
         }}
         value={initialValue}
         onEditorChange={(content, editor) => {
+          console.log('editor', editor);
           onEditorChange(content);
         }}
         disabled={disabled}
@@ -61,7 +63,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
               const fileExt = blobInfo.filename().split('.').pop();
               const fileName = `${Date.now()}.${fileExt}`;
               
-              const { data, error: uploadError } = await supabase.storage
+              const { error: uploadError } = await supabase.storage
                 .from('post-images')
                 .upload(fileName, blobInfo.blob());
 

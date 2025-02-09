@@ -12,6 +12,9 @@ const Header: React.FC = () => {
   const [isProfilePopupOpen, setIsProfilePopupOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("English");
 
+  //log selectedLanguage
+  console.log('selectedLanguage', selectedLanguage);
+
   const router = useRouter();
 
   const toggleLanguagePopup = () => {

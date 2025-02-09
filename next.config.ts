@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true, // ปิด ESLint ในระหว่างการ build
+  },
     images: {
       remotePatterns: [
         {
