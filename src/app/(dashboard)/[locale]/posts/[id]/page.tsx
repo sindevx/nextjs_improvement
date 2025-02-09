@@ -17,7 +17,15 @@ interface Post {
     created_at: string;
 }
 
-export default function PostDetails({ params }: { params: { id: string } }) {
+interface PageProps {
+    params: {
+      id: string;
+    }
+  }
+
+
+
+export default function PostDetails({ params }: PageProps) {
     const router = useRouter();
     const [post, setPost] = useState<Post | null>(null);
     const [loading, setLoading] = useState(true);
@@ -109,6 +117,8 @@ export default function PostDetails({ params }: { params: { id: string } }) {
             <main className="max-w-4xl mx-auto px-4 py-8">
                 <article className="bg-white rounded-lg shadow-sm overflow-hidden">
                     {/* Hero Image with Click Handler */}
+                    Blog ID: {params.id}
+
                     {post.image_url && (
                         <div
                             className="relative w-full h-96 cursor-pointer group"
