@@ -31,7 +31,7 @@ async function verifyAuth(request: Request) {
 
 export async function GET(request: Request) {
     // Verify authentication
-    const { user, error: authError } = await verifyAuth(request);
+    const {  error: authError } = await verifyAuth(request);
 
     if (authError) {
       return NextResponse.json(
@@ -59,7 +59,7 @@ export async function GET(request: Request) {
 // CREATE single category
 export async function POST(request: Request) {
     // Verify authentication
-    const { user, error: authError } = await verifyAuth(request);
+    const {  error: authError } = await verifyAuth(request);
 
     if (authError) {
       return NextResponse.json(

@@ -4,7 +4,6 @@ import { cookies } from "next/headers";
 import { NextResponse } from 'next/server';
 
 export async function DELETE(
-    request: Request,
     { params }: { params: { id: string } }
 ) {
     console.log('Delete comment request for ID:', params.id); // Debug log

@@ -41,6 +41,7 @@
         const data: User[] = await response.json();
         setUsers(data);
       } catch (error) {
+        console.log('error', error);
         alert('Failed to load users');
       } finally {
         setLoading(false);
@@ -69,6 +70,7 @@
         resetForm();
         alert(`User ${selectedUser ? 'updated' : 'created'} successfully`);
       } catch (error) {
+        console.log('error', error);
         alert(`Failed to ${selectedUser ? 'update' : 'create'} user`);
       }
     };
@@ -86,6 +88,7 @@
         await fetchUsers();
         alert('User deleted successfully');
       } catch (error) {
+        console.log('error', error);
         alert('Failed to delete user');
       }
     };

@@ -22,7 +22,7 @@ export interface Tag {
   }
 
 export default function TagsPage() {
-  const router = useRouter();
+  // const router = useRouter();
   const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

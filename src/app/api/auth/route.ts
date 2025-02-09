@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
 }
 
 // Logout API
-export async function DELETE(request: NextRequest) {
+export async function DELETE() {
   try {
     const supabase = createRouteHandlerClient({ cookies });
 
@@ -64,7 +64,7 @@ export async function DELETE(request: NextRequest) {
 }
 
 // Get current session
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const supabase = createRouteHandlerClient({ cookies });
 

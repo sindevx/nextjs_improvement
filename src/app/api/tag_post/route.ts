@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     const { postId, tagId } = await request.json();
     console.log('postId', postId);
     console.log('tagId', tagId);    
-    const { data, error } = await supabase.from('post_tags').insert({ post_id: postId, tag_id: tagId });
+    const { error } = await supabase.from('post_tags').insert({ post_id: postId, tag_id: tagId });
     if (error) {
         console.log('error', error);
         return NextResponse.json({ error: error.message }, { status: 500 });

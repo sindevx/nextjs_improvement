@@ -37,7 +37,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     const { id } = await params;
 
     // Verify authentication
-    const { user, error: authError } = await verifyAuth(request);
+    const {  error: authError } = await verifyAuth(request);
 
     if (authError) {
       return NextResponse.json(

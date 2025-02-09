@@ -28,7 +28,7 @@ export default function EditPostPage(props: PageProps) {
   const router = useRouter();
   const { t } = useLanguage();
 
-  const [post, setPost] = useState<Post | null>(null);
+  const [setPost] = useState<Post | null>(null);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [image, setImage] = useState<File | null>(null);
@@ -53,7 +53,7 @@ export default function EditPostPage(props: PageProps) {
   async function fetchPost(id: string) {
     try {
       const data = await fetchWithAuth(`/api/posts/${id}`);
-      setPost(data);
+      // setPost(data);
       setTitle(data?.title);
       setContent(data?.content || ''); // Make sure to handle null/undefined
       setExistingImage(data?.image_url);

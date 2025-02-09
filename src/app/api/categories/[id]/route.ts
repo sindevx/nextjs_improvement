@@ -32,7 +32,7 @@ async function verifyAuth(request: Request) {
 // GET single category
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
     // Verify authentication
-    const { user, error: authError } = await verifyAuth(request);
+    const {  error: authError } = await verifyAuth(request);
 
     if (authError) {
       return NextResponse.json(
@@ -63,7 +63,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 // UPDATE single category
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
     // Verify authentication
-    const { user, error: authError } = await verifyAuth(request);
+    const {  error: authError } = await verifyAuth(request);
 
     if (authError) {
       return NextResponse.json(
@@ -96,7 +96,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 // UPDATE single category
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   // Verify authentication
-  const { user, error: authError } = await verifyAuth(request);
+  const {  error: authError } = await verifyAuth(request);
 
   if (authError) {
     return NextResponse.json(
@@ -129,7 +129,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 // DELETE single category
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
     // Verify authentication
-    const { user, error: authError } = await verifyAuth(request);
+    const {  error: authError } = await verifyAuth(request);
 
     if (authError) {
       return NextResponse.json(

@@ -51,7 +51,6 @@ export async function PUT(
   }
 
   export async function DELETE(
-    request: Request,
     { params }: { params: { id: string } }
   ) {
     try {

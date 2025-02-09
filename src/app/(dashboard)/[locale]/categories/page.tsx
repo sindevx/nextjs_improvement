@@ -23,7 +23,7 @@ export interface CategoryFormData {
 }
 
 export default function CategoriesPage() {
-  const router = useRouter();
+  // const router = useRouter();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
