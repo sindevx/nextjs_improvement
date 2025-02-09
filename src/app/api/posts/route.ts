@@ -113,17 +113,51 @@ export async function POST(request: Request) {
     }
 
        // ส่ง email notification
-       await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/notifications/email`, {
+    // await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/notifications/email`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //       postTitle: body.title.trim(),
+    //       postContent: body.content.trim(),
+    //       postId: data.id
+    //     })
+    // })
+
+    //call api map tag and post to tag_post table
+    //loop tag and post to tag_post table
+    console.log('body.tags', body.tags);
+    for (const tag of body.tags) {
+      console.log('tag', tag);
+      await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/tag_post`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          postTitle: body.title.trim(),
-          postContent: body.content.trim(),
-          postId: data.id
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          postId: data.id,
+          tagId: tag
         })
       })
+    }
+
+    //loop category and post to category_post table
+    console.log('body.categories', body.categories);
+    for (const category of body.categories) {
+      console.log('category', category);
+      await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/category_post`, {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          postId: data.id,
+          categoryId: category
+        })
+      })
+    }
+
 
     return NextResponse.json(data);
   } catch (error) {

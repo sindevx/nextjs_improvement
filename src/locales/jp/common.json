@@ -11,6 +11,7 @@
         "email": "メールアドレス",
         "password": "パスワード",
         "login": "ログイン",
+        "loggingIn": "ログイン中...",
         "register": "登録",
         "forgotPassword": "パスワードを忘れた",
         "rememberMe": "ログイン情報を保存する",
@@ -21,7 +22,8 @@
         "welcome": "ようこそ",
         "pleaseLogin": "ログインして続行します",
         "byLoggingIn": "ログインすると、利用規約に同意したことになります",
-        "emailPlaceholder": "メールアドレスを入力してください"
+        "emailPlaceholder": "メールアドレスを入力してください",
+        "passwordPlaceholder": "パスワードを入力してください"
     },
     "sidebar":{
         "blog": "ブログ",
@@ -76,7 +78,15 @@
         "failedToCreatePost": "投稿の作成に失敗しました",
         "saveChanges": "変更を保存",
         "backToPosts": "投稿に戻る",
-        "postNotFound": "投稿が見つかりません"
+        "postNotFound": "投稿が見つかりません",
+        "delete": "投稿を削除",
+        "categories": "カテゴリ",
+        "tags": "タグ",
+        "addCategory": "カテゴリ追加",
+        "addTag": "タグ追加",
+        "enterTitle": "タイトルを入力してください",
+        "searchTags": "タグを検索...",
+        "searchCategories": "カテゴリを検索..."
     },
     "contact":{
         "title": "お問い合わせ",

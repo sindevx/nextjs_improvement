@@ -1,4 +1,6 @@
 // src/pages/signup.tsx
+'use client'
+
 import { useState } from 'react';
 import { supabase } from '@/utils/supabaseClient';
 import { useRouter } from 'next/router';
@@ -16,7 +18,7 @@ const SignUp: React.FC = () => {
     setError('');
 
     try {
-      const { user, error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
       });
@@ -27,7 +29,7 @@ const SignUp: React.FC = () => {
 
       router.push('/login'); // Redirect to login page after successful sign up
     } catch (error) {
-      setError(error.message);
+      setError(error as string);
     } finally {
       setLoading(false);
     }

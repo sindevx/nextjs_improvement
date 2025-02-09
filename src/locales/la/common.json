@@ -10,7 +10,9 @@
   "login": {
     "email": "ອີເມວ",
     "password": "ລະຫັດຜ່ານ",
+    "passwordPlaceholder": "ກະລຸນາໃສ່ລະຫັດຜ່ານຂອງທ່ານ",
     "login": "ເຂົ້າສູ່ລະບົບ",
+    "loggingIn": "ກຳລັງເຂົ້າສູ່ລະບົບ...",
     "register": "ລົງທະບຽນ",
     "forgotPassword": "ລືມລະຫັດຜ່ານ",
     "rememberMe": "ຈື່ຈຳການເຂົ້າສູ່ລະບົບ",
@@ -77,7 +79,15 @@
     "failedToCreatePost": "ສ້າງໂພສ ບໍ່ສຳເລັດ",
     "saveChanges": "ບັນທຶກການປ່ຽນແປງ",
     "backToPosts": "ກັບຄືນ",
-    "postNotFound": "ບໍ່ພົບໂພສ"
+    "postNotFound": "ບໍ່ພົບໂພສ",
+    "delete": "ລຶບໂພສ",
+    "categories": "ຫມວດໝູ່",
+    "tags": "ແທັກ",
+    "addCategory": "ເພີ່ມຫມວດໝູ່",
+    "addTag": "ເພີ່ມແທັກ",
+    "enterTitle": "ກະລຸນາໃສ່ຫົວຂໍ້",
+    "searchTags": "ຄົ້ນຫາແທັກ...",
+    "searchCategories": "ຄົ້ນຫາຫມວດໝູ່..."
   },
   "contact":{
     "title": "ຕິດຕໍ່ພວກເຮົາ",

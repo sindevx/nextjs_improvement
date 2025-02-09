@@ -11,6 +11,8 @@
         "email": "Email",
         "password": "Password",
         "login": "Login",
+        "passwordPlaceholder": "please enter your password",
+        "loggingIn": "Logging in...",
         "register": "Register",
         "forgotPassword": "Forgot Password",
         "rememberMe": "Remember Me",
@@ -76,7 +78,15 @@
         "failedToCreatePost": "Failed to create post",
         "saveChanges": "Save Changes",
         "backToPosts": "Back to Posts",
-        "postNotFound": "Post not found"
+        "postNotFound": "Post not found",
+        "delete": "Delete Post",
+        "categories": "Categories",
+        "tags": "Tags",
+        "addCategory": "Add Category",
+        "addTag": "Add Tag",
+        "enterTitle": "Please enter the title",
+        "searchTags": "Search tags...",
+        "searchCategories": "Search categories..."
     },
     "contact":{
         "title": "Contact Us",

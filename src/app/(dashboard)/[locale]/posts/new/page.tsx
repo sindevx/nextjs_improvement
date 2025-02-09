@@ -1,11 +1,39 @@
-'use client';
-
+'use client'
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import {fetchWithAuth} from "@/utils/api";
+import { fetchWithAuth } from "@/utils/api";
 import RichTextEditor from '@/components/RichTextEditor';
 import { useLanguage } from '@/hooks/useLanguage';
+import { Alert } from '@/components/ui/alert';
+
+// types/category.ts
+export interface Category {
+    id: string;
+    name: string;
+    description: string;
+    status: 'active' | 'disabled';
+  }
+  
+  export interface CategoryFormData {
+    name: string;
+    description: string;
+    status: 'active' | 'disabled';
+  }
+  
+  // types/tag.ts
+  export interface Tag {
+    id: string;
+    name: string;
+    description: string;
+    status: 'active' | 'disabled';
+  }
+  
+  export interface TagFormData {
+    name: string;
+    description: string;
+    status: 'active' | 'disabled';
+  }
 
 export default function CreatePostPage() {
     const router = useRouter();
@@ -18,14 +46,60 @@ export default function CreatePostPage() {
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    
+    // New state for categories and tags
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [tags, setTags] = useState<Tag[]>([]);
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [showTagsDropdown, setShowTagsDropdown] = useState(false);
+    const [showCategoriesDropdown, setShowCategoriesDropdown] = useState(false);
+    const [searchCategory, setSearchCategory] = useState('');
+    const [searchTag, setSearchTag] = useState('');
+
+    // Click outside handler
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            const target = event.target as HTMLElement;
+            
+            // Close category dropdown if click is outside
+            if (!target.closest('[data-category-container]')) {
+                setShowCategoriesDropdown(false);
+            }
+            
+            // Close tags dropdown if click is outside
+            if (!target.closest('[data-tag-container]')) {
+                setShowTagsDropdown(false);
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     useEffect(() => {
+        fetchCategoriesAndTags();
         return () => {
             if (imagePreview) {
                 URL.revokeObjectURL(imagePreview);
             }
         };
-    }, [imagePreview]);
+    }, []);
+
+    const fetchCategoriesAndTags = async () => {
+        try {
+            const [categoriesResponse, tagsResponse] = await Promise.all([
+                fetchWithAuth('/api/categories'),
+                fetchWithAuth('/api/tags')
+            ]);
+            
+            setCategories(categoriesResponse.filter((cat: Category) => cat.status === 'active'));
+            setTags(tagsResponse.filter((tag: Tag) => tag.status === 'active'));
+        } catch (err) {
+            console.error('Error fetching categories and tags:', err);
+            setError(t('post.failedToLoadData'));
+        }
+    };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -45,6 +119,30 @@ export default function CreatePostPage() {
         }
     };
 
+    const filteredCategories = categories.filter(category =>
+        category.name.toLowerCase().includes(searchCategory.toLowerCase())
+    );
+
+    const filteredTags = tags.filter(tag =>
+        tag.name.toLowerCase().includes(searchTag.toLowerCase())
+    );
+
+    const toggleCategory = (categoryId: string) => {
+        setSelectedCategories(prev =>
+            prev.includes(categoryId)
+                ? prev.filter(id => id !== categoryId)
+                : [...prev, categoryId]
+        );
+    };
+
+    const toggleTag = (tagId: string) => {
+        setSelectedTags(prev =>
+            prev.includes(tagId)
+                ? prev.filter(id => id !== tagId)
+                : [...prev, tagId]
+        );
+    };
+
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         setLoading(true);
@@ -62,7 +160,6 @@ export default function CreatePostPage() {
                     .upload(fileName, image);
 
                 if (uploadError) {
-                    console.error('Upload error:', uploadError);
                     throw new Error(t('post.failedToUploadImage'));
                 }
 
@@ -73,16 +170,17 @@ export default function CreatePostPage() {
                 image_url = publicUrl;
             }
 
-           await fetchWithAuth('/api/posts', {
+            await fetchWithAuth('/api/posts', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     title,
                     content,
-                    image_url
+                    image_url,
+                    categories: selectedCategories,
+                    tags: selectedTags
                 })
             });
-
 
             router.push('/posts');
         } catch (err) {
@@ -117,12 +215,179 @@ export default function CreatePostPage() {
             <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="bg-white shadow-sm rounded-lg">
                     <form onSubmit={handleSubmit} className="space-y-6 p-6">
-                        {/* Error Display */}
                         {error && (
-                            <div className="bg-red-50 text-red-600 px-4 py-3 rounded-md">
+                            <Alert variant="destructive" className="mb-6">
                                 {error}
-                            </div>
+                            </Alert>
                         )}
+
+                        {/* Title Input */}
+                        <div>
+                            <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+                                {t('post.title')}
+                            </label>
+                            <input
+                                type="text"
+                                id="title"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                required
+                                placeholder={t('post.enterTitle')}
+                            />
+                        </div>
+
+                        {/* Categories Selection */}
+                        <div className="relative" data-category-container>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                {t('post.categories')}
+                            </label>
+                            <div className="min-h-[42px] p-2 border border-gray-300 rounded-md">
+                                <div className="flex flex-wrap gap-2">
+                                    {selectedCategories.map(catId => {
+                                        const category = categories.find(c => c.id === catId);
+                                        return category ? (
+                                            <span
+                                                key={category.id}
+                                                className="inline-flex items-center px-2 py-1 rounded-md text-sm bg-blue-100 text-blue-700"
+                                            >
+                                                {category.name}
+                                                <button
+                                                    type="button"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        toggleCategory(category.id);
+                                                    }}
+                                                    className="ml-1 hover:text-blue-900"
+                                                >
+                                                    ×
+                                                </button>
+                                            </span>
+                                        ) : null;
+                                    })}
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setShowTagsDropdown(false); // Close tags dropdown
+                                            setShowCategoriesDropdown(!showCategoriesDropdown);
+                                        }}
+                                        className="text-gray-500 hover:text-gray-700"
+                                    >
+                                        + {t('post.addCategory')}
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            {showCategoriesDropdown && (
+                                <div className="absolute z-20 mt-1 w-full bg-white shadow-lg rounded-md border">
+                                    <div className="p-2">
+                                        <input
+                                            type="text"
+                                            value={searchCategory}
+                                            onChange={(e) => setSearchCategory(e.target.value)}
+                                            placeholder={t('post.searchCategories')}
+                                            className="w-full px-3 py-2 border rounded-md"
+                                        />
+                                    </div>
+                                    <ul className="max-h-48 overflow-auto py-1">
+                                        {filteredCategories.map(category => (
+                                            <li
+                                                key={category.id}
+                                                className="px-3 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    toggleCategory(category.id);
+                                                }}
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedCategories.includes(category.id)}
+                                                    onChange={() => {}}
+                                                    className="mr-2"
+                                                />
+                                                {category.name}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Tags Selection */}
+                        <div className="relative" data-tag-container>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                {t('post.tags')}
+                            </label>
+                            <div className="min-h-[42px] p-2 border border-gray-300 rounded-md">
+                                <div className="flex flex-wrap gap-2">
+                                    {selectedTags.map(tagId => {
+                                        const tag = tags.find(t => t.id === tagId);
+                                        return tag ? (
+                                            <span
+                                                key={tag.id}
+                                                className="inline-flex items-center px-2 py-1 rounded-md text-sm bg-green-100 text-green-700"
+                                            >
+                                                {tag.name}
+                                                <button
+                                                    type="button"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        toggleTag(tag.id);
+                                                    }}
+                                                    className="ml-1 hover:text-green-900"
+                                                >
+                                                    ×
+                                                </button>
+                                            </span>
+                                        ) : null;
+                                    })}
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setShowCategoriesDropdown(false); // Close categories dropdown
+                                            setShowTagsDropdown(!showTagsDropdown);
+                                        }}
+                                        className="text-gray-500 hover:text-gray-700"
+                                    >
+                                        + {t('post.addTag')}
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            {showTagsDropdown && (
+                                <div className="absolute z-20 mt-1 w-full bg-white shadow-lg rounded-md border">
+                                    <div className="p-2">
+                                        <input
+                                            type="text"
+                                            value={searchTag}
+                                            onChange={(e) => setSearchTag(e.target.value)}
+                                            placeholder={t('post.searchTags')}
+                                            className="w-full px-3 py-2 border rounded-md"
+                                        />
+                                    </div>
+                                    <ul className="max-h-48 overflow-auto py-1">
+                                        {filteredTags.map(tag => (
+                                            <li
+                                                key={tag.id}
+                                                className="px-3 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    toggleTag(tag.id);
+                                                }}
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedTags.includes(tag.id)}
+                                                    onChange={() => {}}
+                                                    className="mr-2"
+                                                />
+                                                {tag.name}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
 
                         {/* Image Upload */}
                         <div>
@@ -174,29 +439,13 @@ export default function CreatePostPage() {
                                                         onChange={handleImageChange}
                                                     />
                                                 </label>
-                                                <p className="pl-1">or drag and drop</p>
+                                                <p className="pl-1">{t('post.dragAndDrop')}</p>
                                             </div>
                                             <p className="text-xs text-gray-500">{t('post.imageFormat')}</p>
                                         </div>
                                     )}
                                 </div>
                             </div>
-                        </div>
-
-                        {/* Title Input */}
-                        <div>
-                            <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-                                {t('post.title')}
-                            </label>
-                            <input
-                                type="text"
-                                id="title"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                                required
-                                placeholder="Enter post title"
-                            />
                         </div>
 
                         {/* Content Input */}
@@ -207,7 +456,7 @@ export default function CreatePostPage() {
                             <RichTextEditor
                                 initialValue={content}
                                 onEditorChange={(newContent) => setContent(newContent)}
-                                // disabled={loading}
+                                disabled={loading}
                             />
                         </div>
 
@@ -235,16 +484,6 @@ export default function CreatePostPage() {
                                 )}
                             </button>
                         </div>
-                        {/* <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Content
-                            </label>
-                            <RichTextEditor
-                                initialValue={content}
-                                onEditorChange={(newContent) => setContent(newContent)}
-                                // disabled={loading}
-                            />
-                        </div> */}
                     </form>
                 </div>
             </main>

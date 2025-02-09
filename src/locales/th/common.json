@@ -11,6 +11,7 @@
         "email": "อีเเมล",
         "password": "รหัสผ่าน",
         "login": "เข้าสู่ระบบ",
+        "loggingIn": "กำลังเข้าสู่ระบบ...",
         "register": "สมัครสมาชิก",
         "forgotPassword": "ลืมรหัสผ่าน",
         "rememberMe": "จดจำฉัน",
@@ -22,7 +23,8 @@
         "pleaseLogin": "กรุณาเข้าสู่ระบบเพื่อดำเนินการต่อ",
         "byLoggingIn": "เข้าสู่ระบบเพื่อดำเนินการต่อ",
         "dontHaveAccount": "ยังไม่มีบันชี?",
-        "emailPlaceholder": "please enter your email"
+        "emailPlaceholder": "กรุณาใส่อีเเมลของคุณ",
+        "passwordPlaceholder": "กรุณาใส่รหัสผ่านของคุณ"
     },
     "sidebar":{
         "blog": "บทความ",
@@ -77,7 +79,15 @@
         "failedToCreatePost": "สร้างโพส บํ่สำเลัด",
         "saveChanges": "บันทึกการแก้ไข",
         "backToPosts": "กับคืน",
-        "postNotFound": "ไม่พบโพส"
+        "postNotFound": "ไม่พบโพส",
+        "delete": "ลบโพส",
+        "categories": "หมวดหมู่",
+        "tags": "แท็ก",
+        "addCategory": "เพิ่มหมวดหมู่",
+        "addTag": "เพิ่มแท็ก",
+        "enterTitle": "กรุณาใส่หัวข้อ",
+        "searchTags": "ค้นหาแท็ก...",
+        "searchCategories": "ค้นหาหมวดหมู่..."
     },
     "contact":{
         "title": "ติดต่อเรา",
