@@ -22,7 +22,13 @@ async function getData(id: string) {
   return post;
 }
 
-export default async function Page({ params }: { params: { id: string } }) {
+interface PageProps {
+  params: {
+    id: string;
+  }
+}
+
+export default async function Page({ params }: PageProps) {
   const post = await getData(params.id);
 
   if (!post) {
