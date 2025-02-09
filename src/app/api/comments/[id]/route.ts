@@ -1,14 +1,17 @@
-// app/api/comments/[id]/route.ts
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
+
 
 export async function DELETE(
-    { params }: { params: { id: string } }
+    request: Request,
+    { params }: { params: Promise<{ id: string }> }
 ) {
-    console.log('Delete comment request for ID:', params.id); // Debug log
-
-    if (!params.id) {
+    //help me fix get id from params
+    const id = await params;
+    console.log('Delete comment request for ID:', id); // Debug log
+    console.log('request', request);
+    if (!id) {
         return NextResponse.json(
             { error: 'Comment ID is required' },
             { status: 400 }
@@ -29,11 +32,13 @@ export async function DELETE(
             );
         }
 
+        const id = await params;
+
         // Delete the comment
         const { error: deleteError } = await supabase
             .from('comments')
             .delete()
-            .eq('id', params.id)
+            .eq('id', id)
             .eq('user_id', session.user.id);
 
         if (deleteError) {

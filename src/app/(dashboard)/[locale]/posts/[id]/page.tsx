@@ -18,14 +18,14 @@ interface Post {
 }
 
 interface PageProps {
-    params: {
+    params: Promise<{
       id: string;
-    }
-  }
+    }>;
+}
 
 
 
-export default function PostDetails({ params }: PageProps) {
+export default async function PostDetails({ params }: PageProps) {
     const router = useRouter();
     const [post, setPost] = useState<Post | null>(null);
     const [loading, setLoading] = useState(true);
@@ -33,10 +33,12 @@ export default function PostDetails({ params }: PageProps) {
     const [isImageOpen, setIsImageOpen] = useState(false);
     const [zoomLevel, setZoomLevel] = useState(1);
     const { t } = useLanguage();
+    const id = await params;
+
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const data = await fetchWithAuth(`/api/posts/${params.id}`);
+                const data = await fetchWithAuth(`/api/posts/${id}`);
                 setPost(data);
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'An error occurred');
@@ -46,7 +48,7 @@ export default function PostDetails({ params }: PageProps) {
         };
 
         fetchPost();
-    }, [params.id]);
+    }, [id]);
 
     const handleImageClick = () => {
         setIsImageOpen(true);
@@ -117,7 +119,6 @@ export default function PostDetails({ params }: PageProps) {
             <main className="max-w-4xl mx-auto px-4 py-8">
                 <article className="bg-white rounded-lg shadow-sm overflow-hidden">
                     {/* Hero Image with Click Handler */}
-                    Blog ID: {params.id}
 
                     {post.image_url && (
                         <div

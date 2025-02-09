@@ -8,10 +8,10 @@ const supabase = createClient(
   );
 export async function PUT(
     request: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
   ) {
     try {
-      const id = params.id;
+      const id = await params;
       const body = await request.json();
   
       // Validate required fields
@@ -51,11 +51,20 @@ export async function PUT(
   }
 
   export async function DELETE(
-    { params }: { params: { id: string } }
+    request: Request,
+    { params }: { params: Promise<{ id: string }> }
   ) {
     try {
-      const id = params.id;
-  
+      const id = await params;
+      console.log('Delete user request for ID:', id); // Debug log
+      console.log('request', request);
+      if (!id) {
+        return NextResponse.json(
+            { error: 'User ID is required' },
+            { status: 400 }
+        );
+    }
+
       const { error } = await supabase
         .from('users')
         .delete()
