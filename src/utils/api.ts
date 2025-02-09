@@ -18,9 +18,9 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
         ...(customHeaders || {})
     });
 
-    console.log('Request URL:', url);
-    console.log('Request Headers:', Object.fromEntries(headers.entries()));
-    console.log('Request Options:', restOptions);
+    // console.log('Request URL:', url);
+    // console.log('Request Headers:', Object.fromEntries(headers.entries()));
+    // console.log('Request Options:', restOptions);
 
     const response = await fetch(url, {
         ...restOptions,
@@ -28,15 +28,15 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
     });
 
     // ล็อก response details
-    console.log('Response Status:', response.status);
-    console.log('Response Headers:', Object.fromEntries(response.headers.entries()));
+    // console.log('Response Status:', response.status);
+    // console.log('Response Headers:', Object.fromEntries(response.headers.entries()));
 
     // Clone response เพื่อให้สามารถอ่าน body ได้หลายครั้ง
     const clonedResponse = response.clone();
 
     try {
         const responseBody = await clonedResponse.text();
-        console.log('Response Body:', responseBody);
+        // console.log('Response Body:', responseBody);
     } catch (error) {
         console.log('Failed to read response body:', error);
     }
@@ -46,4 +46,24 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
     }
 
     return response.json();
+}
+
+export async function fetchWithOutAuth(url: string, options: RequestInit = {}) {
+    const { headers: customHeaders, ...restOptions } = options;
+
+    const headers = new Headers({
+        'Content-Type': 'application/json',
+        ...(customHeaders || {})
+    });
+
+    const response = await fetch(url, {
+        ...restOptions,
+        headers
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response; // Return the full Response object
 }

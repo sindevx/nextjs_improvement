@@ -1,4 +1,3 @@
-// app/posts/[id]/page.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -7,8 +6,9 @@ import { Dialog } from '@headlessui/react';
 import Image from 'next/image';
 import { X, Minus, Plus, RotateCcw } from 'lucide-react';
 import Index from '@/components/Comments';
-import {fetchWithAuth} from "@/utils/api";
+import { fetchWithAuth } from "@/utils/api";
 import { useLanguage } from '@/hooks/useLanguage';
+
 interface Post {
     id: number;
     title: string;
@@ -18,14 +18,12 @@ interface Post {
 }
 
 interface PageProps {
-    params: Promise<{
-      id: string;
-    }>;
+    params: {
+        id: string;
+    };
 }
 
-
-
-export default async function PostDetails({ params }: PageProps) {
+export default function PostDetails({ params }: PageProps) {
     const router = useRouter();
     const [post, setPost] = useState<Post | null>(null);
     const [loading, setLoading] = useState(true);
@@ -33,7 +31,7 @@ export default async function PostDetails({ params }: PageProps) {
     const [isImageOpen, setIsImageOpen] = useState(false);
     const [zoomLevel, setZoomLevel] = useState(1);
     const { t } = useLanguage();
-    const id = await params;
+    const { id } = params;
 
     useEffect(() => {
         const fetchPost = async () => {

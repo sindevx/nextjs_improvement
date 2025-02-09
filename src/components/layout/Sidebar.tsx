@@ -9,7 +9,7 @@ const Sidebar: React.FC = () => {
     const { t } = useLanguage();
     return (
         <div className="w-64 h-screen bg-gray-800 text-white fixed">
-            <h1 className="text-xl font-bold p-4">Learn Next JS</h1>
+            <h1 className="text-xl font-bold p-4">{t('sidebar.applicationName')}</h1>
             <ul>
 
                 <Link href="/posts">

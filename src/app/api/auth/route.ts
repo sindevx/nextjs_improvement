@@ -107,3 +107,20 @@ export async function GET() {
     );
   }
 }
+
+//make api signup and i have to supabase authentication and i have to make a new user in the database
+export async function POST(request: NextRequest) {
+  const { email, password } = await request.json();
+  const supabase = createRouteHandlerClient({ cookies });
+
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+  });
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 401 });
+  }
+
+  return NextResponse.json({ message: 'User created successfully' });
+}

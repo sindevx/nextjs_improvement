@@ -26,7 +26,28 @@
         "emailPlaceholder": "กรุณาใส่อีเเมลของคุณ",
         "passwordPlaceholder": "กรุณาใส่รหัสผ่านของคุณ"
     },
+    "signup":{
+        "signUp": "สมัครสมาชิก",
+        "name": "ชื่อ",
+        "creating": "กำลังสร้างบันชีผู้ใช้...",
+        "namePlaceholder": "กรุณาใส่ชื่อของคุณ",
+        "confirmPassword": "ยืนยันรหัสผ่าน",
+        "email": "อีเมล",
+        "emailPlaceholder": "กรุณาใส่อีเเมลของคุณ",
+        "password": "รหัสผ่าน",
+        "passwordPlaceholder": "กรุณาใส่รหัสผ่านของคุณ",
+        "passwordRequirements": "รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษรและต้องมีตัวเลข, ตัวพิมพ์เล็กและตัวพิมพ์ใหญ่",
+        "agreeToTerms": "สมัครสมาชิกเพื่อดำเนินการต่อ",
+        "login": "เข้าสู่ระบบ",
+        "bySigningUp": "สมัครสมาชิกเพื่อดำเนินการต่อ",
+        "alreadyHaveAccount": "มีบันชีอยู่แล้ว? เข้าสู่ระบบ",
+        "termsOfUse": "เงื่อนไขการใช้งาน",
+        "privacyPolicy": "นโยบายความเป็นส่วนตัว",
+        "createAccount": "สร้างบันชี",
+        "getStarted": "เริ่มต้น"
+    },
     "sidebar":{
+        "applicationName": "Technology Blog",
         "blog": "บทความ",
         "posts": "โพส",
         "about": "เกี่ยวกับเรา",

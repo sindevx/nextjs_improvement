@@ -1,7 +1,7 @@
 "use client"
 // hooks/useLanguage.ts
-import { useCallback } from 'react'
-import { useRouter, usePathname } from 'next/navigation'
+import { useCallback, useState, useEffect } from 'react'
+import { useRouter, usePathname, useParams } from 'next/navigation'
 
 import th from '@/locales/th/common.json'
 import en from '@/locales/en/common.json'
@@ -25,6 +25,15 @@ type Locale = keyof typeof dictionaries
 export function useLanguage() {
   const router = useRouter()
   const pathname = usePathname()
+
+  const params = useParams();
+  const [language, setLanguage] = useState(params.locale || 'en');
+
+  useEffect(() => {
+    if (params.locale) {
+      setLanguage(params.locale);
+    }
+  }, [params.locale]);
 
   const getCurrentLocale = useCallback(() => {
     const segments = pathname.split('/')

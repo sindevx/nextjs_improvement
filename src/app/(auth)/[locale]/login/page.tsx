@@ -7,11 +7,15 @@ import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useLanguage } from '@/hooks/useLanguage';
 
+
 export default function LoginPage() {
   const { t } = useLanguage();
   const router = useRouter();
   const supabase = createClientComponentClient();
 
+  const { currentLocale } = useLanguage();
+
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -35,7 +39,7 @@ export default function LoginPage() {
 
       if (data.session) {
         router.refresh();
-        router.push('/');
+        router.push(`/${currentLocale}/posts`);
       }
     } catch (err) {
       console.error('Login error:', err);
@@ -150,7 +154,7 @@ export default function LoginPage() {
             <div className="mt-6 text-center">
               <span className="text-gray-600">{t('login.dontHaveAccount')} </span>
               <button
-                  onClick={() => router.push('/register')}
+                  onClick={() => router.push(`/${currentLocale}/signup`)}
                   className="text-blue-600 hover:text-blue-500 font-medium"
               >
                 {t('login.signUp')}

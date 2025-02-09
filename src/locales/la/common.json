@@ -26,7 +26,28 @@
     "dontHaveAccount": "ຢັງບໍ່ມີບັນຊີ?",
     "emailPlaceholder": "ກະລຸນາໃສ່ອີເມວຂອງທ່ານ"
   },
+  "signup":{
+    "signUp": "ສະໝັກສະມາຊິກ",
+    "email": "ອີເມວ",
+    "name": "ຊື່",
+    "creating": "ກຳລັງສ້າງບັນຊີຜູ້ໃຊ້...",
+    "namePlaceholder": "ກະລຸນາໃສ່ຊື່ຂອງທ່ານ",
+    "password": "ລະຫັດຜ່ານ",
+    "passwordPlaceholder": "ກະລຸນາໃສ່ລະຫັດຜ່ານຂອງທ່ານ",
+    "confirmPassword": "ກະລຸນາຢືນຢັນລະຫັດຜ່ານ",
+    "emailPlaceholder": "ກະລຸນາໃສ່ອີເມວຂອງທ່ານ",
+    "passwordRequirements": "ລະຫັດຜ່ານຕ້ອງມີຄວາມຢາວອຢ່າງນ້ອຍ 8 ຕັວອັກສະນາແລະຕ້ອງມີຕັວເລກ, ຕັວພິມເລກແລະຕັວພິມໃຫຍ່",
+    "agreeToTerms": "ສະໝັກສະມາຊິກເພື່ອດຳເນີນການຕໍ່",
+    "login": "ເຂົ້າສູ່ລະບົບ",
+    "bySigningUp": "ສະໝັກສະມາຊິກເພື່ອດຳເນີນການຕໍ່",
+    "alreadyHaveAccount": "ມີບັນຊີອຢູ່ແລ້ວ? ເຂົ້າສູ່ລະບົບ",
+    "termsOfUse": "ຂໍ້ກຳນົດ ແລະ ເງື່ອນໄຂ",
+    "privacyPolicy": "ນະໂຍບາຍຄວາມເປັນສ່ວນຕົວ",
+    "createAccount": "ສ້າງບັນຊີ",
+    "getStarted": "ເລີ່ມຕົວ"
+  },
   "sidebar":{
+    "applicationName": "Technology Blog",
     "blog": "ບົດຄວາມ",
     "posts": "ໂພສ",
     "about": "ກ່ຽວກັບພວກເຮົາ",

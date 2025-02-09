@@ -23,9 +23,32 @@
         "welcome": "Welcome",
         "pleaseLogin": "please login for continue",
         "byLoggingIn": "By logging in, you agree to our",
-        "emailPlaceholder": "please enter your email"
+        "emailPlaceholder": "please enter your email",
+        "dontHaveAccount": "Don't have an account? Sign up"
+    },
+    "signup":{
+        "signUp": "Sign Up",
+        "creating": "Creating...",
+        "name": "Name",
+        "namePlaceholder": "please enter your name",
+        "email": "Email",
+        "emailPlaceholder": "please enter your email",
+        "password": "Password",
+        "passwordPlaceholder": "please enter your password",
+        "confirmPassword": "Confirm Password",
+        "confirmPasswordPlaceholder": "please enter your password again",
+        "passwordRequirements": "Password must be at least 8 characters long and contain numbers, lowercase and uppercase letters",
+        "agreeToTerms": "By signing up, you agree to our",
+        "login": "Login",
+        "bySigningUp": "By signing up, you agree to our",
+        "alreadyHaveAccount": "Already have an account? Login",
+        "termsOfUse": "Terms of Use",
+        "privacyPolicy": "Privacy Policy",
+        "createAccount": "Create Account",
+        "getStarted": "Get Started"
     },
     "sidebar":{
+        "applicationName": "Tech Blog",
         "blog": "Blog",
         "posts": "Posts",
         "about": "About",
