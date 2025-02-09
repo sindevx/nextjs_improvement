@@ -18,12 +18,13 @@ interface Post {
 }
 
 interface PageProps {
-    params: {
-        id: string;
-    };
-}
+    params: Promise<{
+      id: string;
+    }>;
+  }
+  
 
-export default function PostDetails({ params }: PageProps) {
+export default async function PostDetails({ params }: PageProps) {
     const router = useRouter();
     const [post, setPost] = useState<Post | null>(null);
     const [loading, setLoading] = useState(true);
@@ -31,7 +32,7 @@ export default function PostDetails({ params }: PageProps) {
     const [isImageOpen, setIsImageOpen] = useState(false);
     const [zoomLevel, setZoomLevel] = useState(1);
     const { t } = useLanguage();
-    const { id } = params;
+    const { id } = await params;
 
     useEffect(() => {
         const fetchPost = async () => {
