@@ -11,14 +11,6 @@ const Sidebar: React.FC = () => {
         <div className="w-64 h-screen bg-gray-800 text-white fixed">
             <h1 className="text-xl font-bold p-4">Learn Next JS</h1>
             <ul>
-                <Link href="/blog">
-
-                    <li className="p-4 hover:bg-gray-700 cursor-pointer flex items-center">
-                        <FaBlog className="mr-2"/>
-                        {t('sidebar.blog')}
-
-                    </li>
-                </Link>
 
                 <Link href="/posts">
 

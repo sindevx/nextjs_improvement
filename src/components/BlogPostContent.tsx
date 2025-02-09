@@ -1,18 +1,19 @@
-// components/BlogPostContent.tsx
 'use client';
 import React from 'react';
 import { Calendar, Clock, User, Share2, BookmarkPlus, ThumbsUp, MessageCircle } from 'lucide-react';
 
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+  author: string;
+  date: string;
+  readTime: string;
+  category: string;
+}
+
 interface BlogPostContentProps {
-  post: {
-    id: number;
-    title: string;
-    content: string;
-    author: string;
-    date: string;
-    readTime: string;
-    category: string;
-  };
+  post: Post;
 }
 
 export default function BlogPostContent({ post }: BlogPostContentProps) {
