@@ -24,7 +24,7 @@
         "pleaseLogin": "please login for continue",
         "byLoggingIn": "By logging in, you agree to our",
         "emailPlaceholder": "please enter your email",
-        "dontHaveAccount": "Don't have an account? Sign up"
+        "dontHaveAccount": "Don't have an account?"
     },
     "signup":{
         "signUp": "Sign Up",
@@ -41,7 +41,7 @@
         "agreeToTerms": "By signing up, you agree to our",
         "login": "Login",
         "bySigningUp": "By signing up, you agree to our",
-        "alreadyHaveAccount": "Already have an account? Login",
+        "alreadyHaveAccount": "Already have an account?",
         "termsOfUse": "Terms of Use",
         "privacyPolicy": "Privacy Policy",
         "createAccount": "Create Account",
@@ -80,7 +80,9 @@
         "noUsersFound": "No users found",
         "userManagement": "User Management",
         "edit": "Edit",
-        "delete": "Delete"
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "addNewUser": "Add New User"
     },
     "post":{
         "title": "Title",
@@ -109,7 +111,9 @@
         "addTag": "Add Tag",
         "enterTitle": "Please enter the title",
         "searchTags": "Search tags...",
-        "searchCategories": "Search categories..."
+        "searchCategories": "Search categories...",
+        "editPost": "Edit Post",
+        "cancel": "Cancel"
     },
     "contact":{
         "title": "Contact Us",

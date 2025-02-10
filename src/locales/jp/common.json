@@ -86,7 +86,8 @@
         "noUsersFound": "ユーザーが見つかりません",
         "userManagement": "ユーザー管理",
         "edit": "編集",
-        "delete": "削除"
+        "delete": "削除",
+        "cancel": "キャンセル"
     },
     "post":{
         "title": "タイトル",

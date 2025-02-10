@@ -40,7 +40,7 @@
         "agreeToTerms": "สมัครสมาชิกเพื่อดำเนินการต่อ",
         "login": "เข้าสู่ระบบ",
         "bySigningUp": "สมัครสมาชิกเพื่อดำเนินการต่อ",
-        "alreadyHaveAccount": "มีบันชีอยู่แล้ว? เข้าสู่ระบบ",
+        "alreadyHaveAccount": "มีบันชีอยู่แล้ว?",
         "termsOfUse": "เงื่อนไขการใช้งาน",
         "privacyPolicy": "นโยบายความเป็นส่วนตัว",
         "createAccount": "สร้างบันชี",
@@ -79,7 +79,8 @@
         "noUsersFound": "ไม่พบผู้ใช้",
         "userManagement": "จัดการผู้ใช้",
         "edit": "แก้ไข",
-        "delete": "ลบ"
+        "delete": "ลบ",
+        "cancel": "ยกเลิก"
     },
     "post":{
         "title": "หัวข้อ",

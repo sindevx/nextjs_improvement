@@ -40,7 +40,7 @@
     "agreeToTerms": "ສະໝັກສະມາຊິກເພື່ອດຳເນີນການຕໍ່",
     "login": "ເຂົ້າສູ່ລະບົບ",
     "bySigningUp": "ສະໝັກສະມາຊິກເພື່ອດຳເນີນການຕໍ່",
-    "alreadyHaveAccount": "ມີບັນຊີອຢູ່ແລ້ວ? ເຂົ້າສູ່ລະບົບ",
+    "alreadyHaveAccount": "ມີບັນຊີແລ້ວບໍ?",
     "termsOfUse": "ຂໍ້ກຳນົດ ແລະ ເງື່ອນໄຂ",
     "privacyPolicy": "ນະໂຍບາຍຄວາມເປັນສ່ວນຕົວ",
     "createAccount": "ສ້າງບັນຊີ",
@@ -79,7 +79,8 @@
     "noUsersFound": "ບໍ່ພົບຜູ້ໃຊ້",
     "userManagement": "ຈັດການຜູ້ໃຊ້",
     "edit": "ແກ້ໄຂ",
-    "delete": "ລຶບ"
+    "delete": "ລຶບ",
+    "cancel": "ຍົກເລີກ"
   },
   "post":{
     "title": "ຫົວຂໍ້",
